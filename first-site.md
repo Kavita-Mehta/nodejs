@@ -40,7 +40,7 @@ Follow the next steps to create your first site!! These steps are fast pace but 
 </html>
 ```
 
-### style.css
+### styles.css
 ```css
 body {
   background-color: lightgray;
