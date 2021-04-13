@@ -402,3 +402,343 @@ The well-reviewed sci-fi thriller “Annihilation” opened with $11 million.![B
 ```
 #### Practice
 [Exercise 4](exercises/html/ex_04.md)
+
+
+## Hyperlink
+* The **a** element (or anchor element) creates a hyperlink to other web pages, files, locations within the same page, email addresses, or any other URL.
+* This element has a **href** attribute that contains a URL or a URL fragment that the hyperlink points to
+* Between the opening and the closing tag we can add the link content that the user will click on
+* As content we can put other HTML elements like an image tag
+[](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)
+
+**Example:**
+```html
+<a href="other_file.html">Click me I'm a link!!</a>
+<a href="my_dog.jpg">Link to my dog picture</a>
+<a href="video.avi">Link to my video</a>
+```
+
+### External links
+* In some cases we need to link our HTML documents with external files or other resources
+* We can do this by using the external URL's as **href** values
+
+**Example:**
+```html
+<a href="http://google.com">Go to google.com</a>
+```
+
+### Target attribute
+* The **a** has a target attribute that specifies where to display the linked URL.
+* The following keywords have special meanings:
+  * **_self**: Load the URL into the same browsing context as the current one. This is the default behavior.
+  * **_blank**: Load the URL into a new browsing context. This is usually a tab, but users can configure browsers to use new windows instead.
+  * **_parent**: Load the URL into the parent browsing context of the current one. If there is no parent, this behaves the same way as _self.
+  * **_top**: Load the URL into the top-level browsing context (that is, the "highest" browsing context that is an ancestor of the current one, and has no parent). If there is no parent, this behaves the same way as _self.
+* For now we'll use only **_blank** as it's the one we use the most
+
+**Example:**
+```html
+<a href="http://www.comit.org" target="_blank">ComIT</a>
+<a href="http://www.comunidadit.org" target="_blank">Comunidad IT</a>
+```
+
+### Absolute & relative URLs
+* We can define `absolute or relative` Urls
+* Let's check this [MDN URL guide](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_is_a_URL) to understand better what's and absolute URL
+
+**Example:**
+```html
+<a href="http://yahoo.com">Abrir Yahoo</a>
+<a href="c:\Users\my_name\my_cv.pdf">Look at my CV</a>
+```
+
+* Links can have a relative URL or path
+* In this type of URLs we need to know the relationship between files
+* To access to the root of our site we can use the following relative path
+* Absolute and relatives URLs and Paths will work with any element that need an URL or path to work (imgs, video, audio and more)
+
+**Example:**
+```html
+<a href="/">Go Home</a>
+```
+
+```
+/ (root of our folder)
+|
+|-- index.html
+|-- about.html
+
+```
+
+* If we have to files that are siblings or in the same path level we can use the filename as link
+
+**Example:**
+```html
+To link index.html with about.html
+<a href="about.html">About</a>
+
+To link about.html with index.html
+<a href="index.html">Go Home</a>
+
+As index is the main file in our site we could use the root
+<a href="/">Go Home</a>
+```
+
+```
+/ (root of our folder)
+|-- about/
+|   |--- about.html
+|
+|-- index.html
+```
+
+* To link a file that it's inside a folder we'll use the **foldername/filename**
+
+**Example:**
+```html
+To link index.html with the about.html
+<a href="about/about.html">About</a>
+```
+
+* Also we can link files from inside a folder to another that's outside
+* We will add as many **../** as folders we need to exit
+
+**Example:**
+```html
+To link about.html to index.html first we need to exit the about folder
+<a href="../index.html">Go home</a>
+```
+
+```
+/ (root of our folder)
+|-- about/
+|   |-- other_folder/
+|     |--- about.html
+|
+|-- index.html
+```
+
+**Example:**
+```html
+With this folder structure:
+To link from index.html to about.html we'll use both folder names
+<a href="about/other_folder/about.html">About</a>
+
+To link about.html to index.html we need to exit 2 folders (../../filename)
+<a href="../../index.html">Go home</a>
+```
+
+* [absolute vs relative pathslinks](https://www.coffeecup.com/help/articles/absolute-vs-relative-pathslinks)
+* [What are hyperlinks](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_are_hyperlinks)
+* [Creating hyperlinks](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
+* [Dealing with files](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)
+
+## Mailto
+* We can use links to configure to send an email
+* The browser will try to open the default email app if we set the **href** value to **mailto:account@domain.com**
+
+```html
+<a href="mailto:pablo@comit.org">Contact me</a>
+```
+
+### Anchor
+* We can use links to navigate to anchor points and into a selected document part
+* If the URL has an anchor the browser will lookup for that document section
+* To accomplish this task we need to combine the **a** element and **href**, **name** attributes
+* The **#** works as anchor symbol (remember the URLs MDN guide)
+
+**Example**
+```html
+First we'll create a link with the anchor href
+<a href="#news">News Section</a>
+
+Then we need to create the anchor by using the name attribute
+<a name="news"></a>
+
+We created an empty link with the news attribute. As they are on the same document the browser will try to
+navigate to the news anchor.
+
+To be able to see this magic working we need to create long documents
+
+Also we can navigate to a different document section:
+<a href="news.html#nhl">NHL news section</a>
+```
+
+#### Practice
+[Exercise 5](exercises/html/ex_05.md)
+
+[Exercise 6](exercises/html/ex_06.md)
+
+## Images
+* The **img** element embeds an image into the document
+* It's only a one tag element as it doesn't allow content (other elements or text)
+* The **src** attribute accepts an image filename / path
+* The **img** is an inline element
+* By default the placeholder will have the image size
+* We must use optimized images to avoid big files
+* The browser knows how to render different image types: [jpg](https://es.wikipedia.org/wiki/Joint_Photographic_Experts_Group), [png](https://es.wikipedia.org/wiki/Portable_Network_Graphics) & [gif](https://es.wikipedia.org/wiki/Graphics_Interchange_Format)
+* [Image optimization - Google Developers](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization)
+* [MDN img doc](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img)
+
+**Example**
+```html
+<img src="mypicture.jpg">
+```
+
+* We can use absolute or relative paths/urls as **src** value
+
+**Example**
+```html
+Relative example:
+<img src="img/mypicture.jpg">
+
+Go one folder level back, then enter the img folder and get mypicture file
+<img src="../img/mypicture.jpg">
+
+Absolute URL:
+<img src="http://images6.fanpop.com/image/photos/39500000/il-570xN-917420114-2kdu-rick-and-morty-39567961-300-370.jpg" >
+```
+
+* The **img** has a **height** and **width** attribute
+* This attributes accepts the intrinsic width & height of the image in pixels
+* HTML5 doesn't accept other types of values
+* Keep in mind the image ratio when using this attributes
+
+```html
+<img src="mypicture.jpg" height="300" width="300">
+```
+* The **alt** attribute defines the alternative text describing the image. 
+* Users will see this text displayed if the image URL is wrong, the image is not in one of the supported formats, or if the image is not yet downloaded.
+* Also, screen readers will use this attribute to describe the image
+* Adding this attribute to our images is a good practice
+
+**Example**
+```html
+<img src="coding.jpg" alt="Developers working on a new project">
+```
+
+* We can also add a global attribute to our images to describe it better
+* The title contains a text representing advisory information related to the element it belongs to. 
+* Such information can typically, but not necessarily, be presented to the user as a tooltip.
+
+**Example**
+```html
+<img src="coding.jpg" alt="Developers working on a new project" title="Nerds" >
+```
+* [Image alt vs title - Using alt title attributes in image tags](https://www.wpromote.com/blog/image-alt-vs-title-using-alt-title-attributes-in-image-tags)
+
+### Figure & Figure caption
+* the **figure** element represents self-contained content, frequently with a caption (**figcaption**), and is typically referenced as a single unit.
+* As **figure** content we'll add an image (**img**) and a caption (**figcaption**) elements
+* Older browser won't know how to show this element but they will render the image
+* [MDN figure doc](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure)
+* [Test your browser](https://html5test.com)
+
+**Example**
+```html
+<figure>
+  <img src="coding.jpg" alt="Developers working on a new project" title="Nerds" >
+  <figcaption>Developers working on a new project</figcaption>
+</figure>
+```
+
+#### Practice
+[Exercise 7](exercises/html/ex_07.md)
+
+## Table
+* The **table** element represents tabular data — that is, information presented in a two-dimensional table comprised of rows and columns of cells containing data
+* Our table will have rows (table rows or **tr**) and columns (table data or **td**) 
+* [MDN table doc](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table)
+* [MDN tr doc](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tr)
+* [MDN td doc](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/td)
+
+**Example**
+```html
+<table>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>3 </td>
+    <td>4</td>
+  </tr>
+</table>
+```
+
+* In this example will see a table with 1 and 2 on the first row and 3 and 4 in the second one
+* If we need to have an empty cell we still need to add it as part of the table
+
+**Example**
+```html
+<table>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>3 </td>
+    <td></td>
+  </tr>
+</table>
+```
+
+#### Practice
+[Exercise 8](exercises/html/ex_08.md)
+
+* Also we can use a **th** to define a cell as header
+* [MDN th doc](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th)
+
+**Example**
+```html
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Last Name</th>
+  </tr>
+  <tr>
+    <td>Dale</td>
+    <td>Hawerchuk</td>
+  </tr>
+</table>
+```
+
+* We can use the following elements to define table sections: **thead, tbody & tfoot**
+* The **thead** element defines a set of rows defining the head of the columns of the table
+* The **tbody** encapsulates a set of table row (**tr** elements, indicating that they comprise the body of the table)
+* The **tfoot** element defines a set of rows summarizing the columns of the table
+* A well structured table has all 3 sections
+* This is also useful for the screen readers
+* We can combine the **thead** and **th** element
+
+**Example**
+```html
+<table>
+  <thead>
+    <tr>
+      <th>Header 1 - 1</th>
+      <th>Header 1 - 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Body 1 - 1</td>
+      <td>Body 1 - 2</td>
+    </tr>
+    <tr>
+      <td>Body 2 - 1</td>
+      <td>Body 2 - 2</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Foot 1 - 1</td>
+      <td>Foot 1 - 2</td>
+    </tr>
+  </tfoot>
+</table>
+```
+
+#### Practice
+[Exercise 9](exercises/html/ex_09.md)
+
