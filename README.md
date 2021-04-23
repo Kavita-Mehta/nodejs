@@ -12,3 +12,8 @@
   * `git: Multiplayer Notepad`
 * [HTML](html.md)
   * `Structuring the web`
+* [CSS](css.md)
+  * `.thumbs { vertical-align: top; }`
+* [JavaScript](javascript.md)
+  * `Promise you will enjoy this`
+
