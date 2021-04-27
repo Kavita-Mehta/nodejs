@@ -646,3 +646,718 @@ constantVariable = otherValue;
 [Exercise 25](./exercises/js/ex_25.md)
 
 [Exercise 26](./exercises/js/ex_26.md)
+## Arithmetic operators
+* Arithmetic operators take numerical values (either literals or variables) as their operands and return a single numerical value
+* The standard arithmetic operators are `addition (+), subtraction (-), multiplication (*), & division (/)`
+
+### Addition
+* The addition operator **(+)** produces the sum of numeric operands or string concatenation
+
+  **Example:**
+  ```js
+  2 + 2
+  ```
+
+* In this example we add two literal numbers
+
+  **Example:**
+  ```js
+  const myAge = 20;
+  const myBrotherAge = 15;
+
+  console.log(myAge + myBrotherAge);
+  ```
+
+* We can add two or more values using variables
+
+  **Example:**
+  ```js
+  const myAge = 20;
+  const myBrotherAge = 15;
+  const result = myAge + myBrotherAge;
+
+  console.log(result);
+  ```
+
+* In this example we store the result of adding two values into the result variable
+
+  **Example:**
+  ```js
+  const myAge = 20;
+  const myBrotherAge = 15;
+  const result = myAge + myBrotherAge;
+
+  console.log(result + 2);
+  ```
+
+* Also we can add variables values and literal numbers too
+
+### Subtraction
+* The subtraction operator **(-)** subtracts the two number operands, producing their difference
+
+  **Example:**
+  ```js
+  2 - 2; // We get 0 as result
+
+  const myAge = 20;
+  const myBrotherAge = 15;
+
+  // We show the difference between myAge and myBrotherAge
+  console.log(myAge - myBrotherAge);
+
+  // Also we can use a variable to store the subtraction result
+  const result = myAge - myBrotherAge;
+
+  console.log(result);
+  ```
+
+* Also we can combine operations
+
+  **Example:**
+  ```js
+  10 + 2 - 2; 
+
+  const myAge = 20;
+  const myBrotherAge = 15;
+
+  // Use variables, literal number and different arithmetic operators
+  console.log(myAge - myBrotherAge + 10);
+
+  const result = myAge - myBrotherAge + 10;
+
+  console.log('Result: ' + result);
+  ```
+
+  ### Multiplication
+  * The multiplication operator **(*)** produces the product of the operands
+
+  **Example:**
+  ```js
+  2 * 2; // Returns 4 as result
+
+  const firstNumber = 10;
+  const secondNumber = 5;
+
+  console.log(firstNumber * secondNumber);
+
+  const result = firstNumber * secondNumber;
+
+  console.log(result);
+  ```
+
+* In some cases we can use grouping **(operation)** to let the engine know that it need to resolve this operation first
+* Read the [MND operator precedence doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence) to know more about this subject
+
+  **Example:**
+  ```js
+  2 + 2 * 4; // 10
+  (2 + 2) * 4; // 16
+  ```
+
+* In the first example it will multiply 2 times 4 and then add 2 to the result
+* In the second example as we are grouping 2 plus 2 it will resolve this operation first and then multiply by 4
+* This concept works with variables too
+
+  **Example:**
+  ```js
+  const two = 2;
+  const four = 4;
+
+  console.log(two + two * four); // 10
+  console.log( (two + two) * four ); // 16
+  ```
+
+### Division 
+* The division operator **(/)** produces the quotient of its operands where the left operand is the dividend and the right operand is the divisor
+
+  **Example:**
+  ```js
+  20 / 2; // 10
+
+  const firstNumber = 20;
+  const secondNumber = 2;
+
+  console.log(firstNumber / secondNumber); // 10
+
+  const result = firstNumber / secondNumber;
+
+  console.log(result); // 10
+  ```
+
+* With code we can have the same problem that we can have in math when we divide by 0
+* JavaScript has a special number type called **Infinity**
+* We get **Infinity** if we try to divide by 0
+* [MDN Infinity doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity)
+
+### Remainder
+* The remainder operator **(%)** returns the remainder left over when one operand is divided by a second operand
+
+  **Example:**
+  ```js
+  20 % 2; // 0
+
+  const firstNumber = 20;
+  const secondNumber = 2;
+
+  console.log(firstNumber % secondNumber); // 0
+
+  const result = firstNumber % secondNumber;
+
+  console.log(result); // 0
+  ```
+
+* We can use this operator to find out if a number is even or odd
+[Freecodecamp - Finding a remainder in JavaScript](https://www.freecodecamp.org/challenges/finding-a-remainder-in-javascript)
+
+#### Practice
+[Exercise 27](./exercises/js/ex_27.md)
+
+[Exercise 28](./exercises/js/ex_28.md)
+
+[Exercise 29](./exercises/js/ex_29.md)
+
+[Exercise 30](./exercises/js/ex_30.md)
+
+[Exercise 31](./exercises/js/ex_31.md)
+
+[Exercise 32](./exercises/js/ex_32.md)
+
+### Increment & Decrement
+* Using the increment and decrement operators we can do addition and substraction by one really easy
+
+#### Increment
+* The increment operator **++** increments (adds one to) its operand and returns a value
+* If used [postfix](http://www.cs.man.ac.uk/~pjj/cs212/fix.html), with the operator after the operand (for example, x++), then it returns the value before incrementing
+ 
+  **Example:**
+  ```js
+  let number = 0;
+
+  number++;
+
+  console.log(number); // 1
+  ```
+
+* If used prefix with the operator before the operand (for example, ++x), then it returns the value after incrementing
+
+  **Example:**
+  ```js
+  let number = 0;
+
+  ++number;
+
+  console.log(number); // 1
+  ```
+
+* In this case we can use the operator before or after but there might be cases when we need to use one or the other depending if we're using the incremented result or not
+
+#### Decrement
+* The decrement operator **--** decrements (subtracts one from) its operand and returns a value
+* If used postfix (for example, x--), then it returns the value before decrementing
+* If used prefix (for example, --x), then it returns the value after decrementing
+
+  **Example:**
+  ```js
+  let number = 10;
+
+  --number;
+
+  console.log(number); // 9
+
+  number--;
+
+  console.log(number); // 8
+  ```
+
+#### Assignment operators
+* We can assign a number to a variable then use this variable to do any arithmetic operation
+* Also we can reuse the variable to assign the result of the arithmetic operation
+* Take a look at the following example:
+
+  **Example:**
+  ```js
+  let number = 1;
+  number = number + 1
+  ```
+
+* In this example we increment the value of the number variable by one
+* We already saw that we can use the increment operator **++** to do this
+
+  **Example:**
+  ```js
+  let number = 1;
+
+  number++;
+  ```
+
+* We see in this examples that we increment and assign the result to the variable
+* The increment and decrement operators are great but we can only add or subtract by one
+* We can use different assignment operators to do this task for different operations
+* Assignment operators:
+  * `+=` Addition assignment
+  * `-=` Subtraction assignment
+  * `*=` Multiplication assignment
+  * `/=` Division assignment
+  * `%=` Remainder assignment
+* This concept is easier to understand using code:
+
+  **Example:**
+  ```js
+  let number = 1;
+
+  number += 1;
+
+  console.log(number); // 2
+  ```
+
+  **Example:**
+  ```js
+  let number = 1;
+
+  number = number + 10;
+
+  console.log(number); // 11
+  ```
+
+* Using the addition assignment we can do the same operation much easier:
+
+  **Example:**
+  ```js
+  let number = 1;
+
+  number += 10;
+
+  console.log(number); // 11
+  ```
+
+* We can add 10 to the current number variable value using the addition assignment operator `+=`
+* Then we can use any of the other assignment operators
+
+  **Example:**
+  ```js
+  let number = 10;
+
+  number -= 2;
+
+  console.log(number); // 8
+  ```
+
+  **Example:**
+  ```js
+  let number = 10;
+
+  number *= 2;
+
+  console.log(number); // 20
+  ```
+
+  **Example:**
+  ```js
+  let number = 20;
+
+  number /= 2;
+
+  console.log(number); // 10
+  ```
+
+  **Example:**
+  ```js
+  let number = 20;
+
+  number %= 2;
+
+  console.log(number); // 0
+  ```
+
+* The concept is always the same but it only changes the operation that we do over the given variable
+* You can learn more about assignment operators on [MDN site](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Assignment_Operators)
+
+#### Practice
+[Exercise 33](./exercises/js/ex_33.md)
+
+## Comparison operators
+
+### Equality operators
+* We can compare two values using the equality operators **==**
+* Using the equality operators we get a **boolean** value as result (true or false)
+* This type of equality only compares values (or the current values of variables) by value
+* For example using this operator we can compare a number value and string value with a number
+* If both values are equal we get **true** as result
+* In case they are not the same value we'll get **false** as result
+
+  **Example:**
+  ```js
+  let firstNumber = 20;
+  let secondNumber = 20;
+  let thirdNumber = 10;
+
+  console.log(firstNumber == secondNumber); // true
+  console.log(firstNumber == thirdNumber); // false
+  ```
+
+* As we only compare by value:
+
+  **Example:**
+  ```js
+  console.log(10 == '10'); // This is true even though the variables have different value type
+  ```
+
+* Also we can know if the values are different using the inequality operator **!=**
+
+  **Example:**
+  ```js
+  let firstNumber = 20;
+  let secondNumber = 20;
+  let thirdNumber = 10;
+
+  console.log(firstNumber != secondNumber); // false
+  console.log(firstNumber != thirdNumber); // true
+  ```
+
+* Other way to compare values is to know if a value is greater than the other
+* The greater than operator **>** returns true if the left operand is greater than the right operand
+
+  **Example:**
+  ```js
+  let firstNumber = 20;
+  let secondNumber = 10;
+
+  console.log(firstNumber > secondNumber); // true
+
+  console.log(secondNumber > firstNumber); // false
+  ```
+
+* Also we can compare values by using the less than operator
+* The less than operator **<** returns true if the left operand is less than the right operand
+
+  **Example:**
+  ```js
+  let firstNumber = 20;
+  let secondNumber = 10;
+
+  console.log(secondNumber < firstNumber); // true
+
+  console.log(firstNumber < secondNumber); // false
+  ```
+
+* We can use the greater than or equal operator 
+* The greater than or equal operator >= returns true if the left operand is greater than or equal to the right operand
+
+  **Example:**
+  ```js
+  let firstNumber = 20;
+  let secondNumber = 10;
+  let thirdNumber = 20;
+
+  console.log(firstNumber >= secondNumber); // true
+
+  console.log(firstNumber >= thirdNumber); // true
+  ```
+
+* We can do the same using less than or equal
+* The less than or equal operator **<=** returns true if the left operand is less than or equal to the right operand
+
+  **Example:**
+  ```js
+  let firstNumber = 20;
+  let secondNumber = 10;
+  let thirdNumber = 10;
+
+  console.log(secondNumber <= firstNumber); // true
+  console.log(secondNumber <= thirdNumber); // true
+  ```
+
+### Strict Equality Comparison 
+* The strict equality operators **===** and **!==** use the Strict Equality Comparison Algorithm and are intended for performing equality comparisons on operands of the **same type**
+
+  **Example:**
+  ```js
+  console.log(10 === '10'); // false
+
+  console.log(10 !== '10'); // true
+  ```
+
+* Read more about the [comparison operators on MDN site](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators)
+
+#### Practice
+[Exercise 34](./exercises/js/ex_34.md)
+
+[Exercise 35](./exercises/js/ex_35.md)
+
+## Logical Operators
+* Logical operators are typically used with Boolean (logical) values
+* When they are, they return a **Boolean** value
+* We can use the **`&&`** **"Boolean AND" operator** to know if both expressions are true
+* We can know if the user age is greater than 18 and the password is equal to another value
+* In this case we'll get a true value if both expressions are true
+* If one of the expressions is **false**, we get false as the return value too
+
+  **Example:**
+  ```js
+  let age = 20;
+  let password = 'js1234';
+  let result = (age >= 18 && password ==='js1234');
+  console.log('Result: ', result); // We get true as both expressions are true
+  ```
+
+* In this example we get **true** as both expressions are **true**
+* We also have the **`||`** **"Boolean OR" operator** to check if at least one of the expressions is true
+* Using this operator we only need one of the expressions to be true
+* If the first expression is true the following one is not evaluated
+* If the first expression is false then the following one is evaluated 
+* At least one of the expressions needs to be true to get a true value 
+* If not we'll get false as the result
+
+  **Example:**
+  ```js
+  let age = 20;
+  let password = 'js12345';
+  let result = age >= 18 || password ==='js1234';
+  console.log('Result: ', result); // true
+  ```
+
+* In this case the condition is **true** as the user age is greater than 18 (first expression)
+* It doesn't matter if the password is the same or not as the first expression is true
+
+  **Example:**
+  ```js
+  let age = 10;
+  let password = 'js1234';
+  let result = age >= 18 || password ==='js1234';
+  console.log('Result: ', result); // true
+  ```
+
+* In this case the condition is **true** as the password is correct
+* It doesn't matter if the age is not greater than or equal to 18
+
+  **Example:**
+  ```js
+  let age = 10;
+  let password = 'js12345';
+  let result = age >= 18 || password ==='js1234';
+  console.log('Result: ', result); // false
+  ```
+
+* In this case we get **false** as both expressions are false
+* [MDN logical operators doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators)
+
+## Negation
+* Using the not operator **!** we can negate a condition
+* If we have a **true** value and we use the not operator we get **false**
+* If we have a **false** value and we use the not operator we get **true**
+
+  **Example:**
+  ```js
+  console.log(!true); // false
+  console.log(!false); // true
+  ```
+
+* We can use the not operator like this: 
+
+  **Example:**
+  ```js
+  let age = 21;
+  let result = age < 18; 
+
+  console.log('User age greater than or equal to 18?: ', !result);
+  ```
+
+* The age condition is **false** but as we use the not operator it will be **true**
+
+#### Practice
+[Exercise 36](./exercises/js/ex_36.md)
+
+[Exercise 37](./exercises/js/ex_37.md)
+
+## String special characters
+* Strings support some special characters that will provide extra functionality
+* \n  New Line
+* \t  Tab
+* \r  Carriage Return
+
+  **Example:**
+  ```js
+  let message = 'Multiline \n text';
+
+  console.log(message); // two lines text
+
+  message = '\t \t tab text';
+
+  console.log(message); // tab text
+  ```
+
+* Special characters need to be "escaped" :
+* \'  Single quote
+* \"  Double quote
+* \\  Backslash
+
+  **Example:**
+  ```js
+  let message = 'Escaping backslash \\ as string content';
+  console.log(message); // we show \ as string content
+
+  message = 'I love to have coffee at Gianu\'s';
+
+  console.log(message);
+
+  message = "Riders are \"the\" best CFL team";
+
+  console.log(message);
+  ```
+
+#### Practice
+* Open a browser console and try all the examples to see the output
+
+## String object properties and methods
+
+### Length
+* The **length** property of a **String object** indicates the length of a string
+* This property returns the **number** of code units in the string
+
+  **Example:**
+  ```js
+  const text = 'Welcome to JavaScript!!';
+  const characterCount = text.length;
+
+  console.log(characterCount); // 24
+  ```
+
+  **Example:**
+  ```js
+  const text = 'Welcome to JavaScript!!';
+
+  console.log(text.length);
+  ```
+
+  **Example:**
+  ```js
+  console.log('Welcome to JavaScript!!'.length);
+  ```
+
+* Strings have a length property that allows us to know the string value length (characters)
+* We can use it with string literals
+* We can also use it on a string stored in a variable
+* Finally we can store the length in a variable too in case we need it
+* [MDN length doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length)
+
+#### Practice
+[Exercise 38](./exercises/js/ex_38.md)
+
+[Exercise 39](./exercises/js/ex_39.md)
+
+### String methods
+* Object methods can give us different functionality for different data types
+* In this section we'll explore the String object methods
+* JavaScript transforms string literals into String objects when calling a method
+* [MDN String methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+  **Example:**
+  ```js
+  const stringVariable = 'string value';
+
+  // We can call String methods when we have a string value type. 
+  // To call the method use a dot before the method name
+  // After the method name we add () to execute it
+  stringVariable.method();
+
+  // Also we can pass values to the method and they are called parameters
+  stringVariable.method(methodParameter);
+
+  // A method might accept more than one parameter and will depend on the method contract
+  stringVariable.method(methodParameter, otherMethodParameter);
+  ```
+
+* This method returns a new string with the text of the inputs concatenated (put together)
+
+## Concat
+* Using the **+** operator we can concatenate string values
+* The String object has a **concat** method to do the same using methods instead of operators
+* [MDN concat doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/concat)
+
+  **Example:**
+  ```js
+  const text = 'My mom name is '; // Note the trailing space!  It's a common mistake to forget whitespace when using concat
+  const name = 'Marta';
+
+  // We get one string back as result with both strings concatenated
+  const message = text.concat(name);
+
+  console.log(message); // My mom name is Marta
+
+  console.log(text); // My mom name is
+
+  console.log(name); // Marta
+  ```
+
+* Some methods might change the object value
+* In this case concat only returns a new string without changing the original values
+* The concat method also accepts multiple parameters
+
+  **Example:**
+  ```js
+  let text = 'Java'; // Sometimes we don't want that trailing space ;)
+
+  console.log(text.concat('Script', ' is the best', ' Programming language!!'));
+  ```
+* The concat method will return the following string: **JavaScript is the best Programming language!!**
+* In this example we used concat with many parameters using literal strings
+* We can also use variables
+
+#### Practice
+[Exercise 40](./exercises/js/ex_40.md)
+
+### Upper and lower case
+* Using the **toUpperCase** & **toLowerCase** we can transform our text to upper and lower case
+
+  **Example:**
+  ```js
+  const upperCaseText = 'HELLO';
+  const lowerCaseText = 'friends';
+
+  console.log(upperCaseText.toLowerCase()); // hello
+  console.log(lowerCaseText.toUpperCase()); // FRIENDS
+
+  console.log(upperCaseText); // HELLO
+  console.log(lowerCaseText); // friends
+  ```
+
+#### Practice
+[Exercise 41](./exercises/js/ex_41.md)
+
+[Exercise 42](./exercises/js/ex_42.md)
+
+### String characters position
+* The **charAt** method returns the character at the specified index
+* This method accepts a number parameter to specify the index position
+* Index in JavaScript starts in 0
+* The first character will be at the 0 index position
+
+  **Example:**
+  ```js
+  const text = 'JavaScript rocks!! right?';
+  const firstCharacter = text.charAt(0); 
+
+  console.log(firstCharacter); // J
+
+  console.log(text.charAt(0)); // J
+  ```
+
+* To know the last string character we can combine charAt and the length property
+* As length will return the amount of characters and the index starts at 0 to know the last character we need to substract one from the length value
+
+  **Example:**
+  ```js
+  const text = 'JavaScript rocks!! right?';
+  const lastCharacterPosition = text.length - 1;
+  const lastCharacter = text.charAt(lastCharacterPosition);
+
+  console.log(lastCharacter); // ?
+
+  console.log( text.charAt(text.length - 1) ); // ?
+  ```
+
+#### Practice
+[Exercise 43](./exercises/js/ex_43.md)
+
+[Exercise 44](./exercises/js/ex_44.md)
+
