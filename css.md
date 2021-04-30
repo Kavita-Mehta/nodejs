@@ -1871,5 +1871,570 @@ div {
   * [Foundation](https://foundation.zurb.com/grid.html)
 
   ![Bootstrap](./resources/images/css/using-grids-2.jpg)
+### Position
+* The **position** property specifies how an element is positioned in a document
+* Property values:
+  * static
+  * relative
+  * absolute
+  * fixed
+  * sticky
+* We'll use the **top, right, bottom, and left** properties to determine the final location of positioned element
+* [MDN position doc](https://developer.mozilla.org/es/docs/Web/CSS/position)
 
+#### Static
+* This is the default value
+* The element is positioned according to the normal flow of the document
+* The top, right, bottom, left, and z-index properties have no effect
+
+  **Example:**
+  ```css
+  div {
+    position: static;
+  }
+  ```
+
+#### Relative
+* The element is positioned according to the normal flow of the document
+* Then offset relative to itself based on the values of `top, right, bottom, and left`
+* The offset does not affect the position of any other elements
+* The space given for the element in the page layout is the same as if position were static
+* This value creates a new stacking context when the value of z-index is not auto
+
+  **Example:**
+  ```css
+  div {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  ```
+
+  **Example:**
+  ```css
+  div {
+    border: 1px solid black;
+    background-color: #eee;
+  }
+
+  div.relative {
+    position: relative;
+    top: 20px;
+    left: 20px;
+    background-color: pink;
+    border-color: red;
+  }
+  ```
+
+  ![Relative position](./resources/images/css/layout/relative.png)
+
+* [Position Relative example](./examples/css/layout/relative.html)
+
+#### Practice
+[Exercise 20](exercises/css/ex_20.md)
+
+#### Absolute
+* The element is removed from the normal document flow
+* No space is created for the element in the page layout
+* It is positioned relative to its closest positioned ancestor (if any), otherwise it is placed relative to the initial containing block
+* It's final position is determined by the values of `top, right, bottom, and left`
+* Absolutely positioned boxes can have margins, and they do not collapse with any other margins
+
+  **Example:**
+  ```css
+    body {
+      border: 2px solid orange;
+    }
+    div {
+      border: 1px solid black;
+      background-color: #eee;
+    }
+
+    div.absolute {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: pink;
+      border-color: red;
+    }
+  ```
+
+  ![Absolute position](./resources/images/css/layout/absolute1.png)
+
+* [Position Absolute example](./examples/css/layout/absolute.html)
+
+* In the previous example the absolute position is based on the body position as it's the parent element
+
+  **Example:**
+  ```css
+  body {
+    border: 2px solid orange;
+  }
+
+  div {
+    border: 1px solid black;
+    background-color: #eee;
+  }
+
+  div.container {
+    position: relative;
+    height: 150px;
+    background-color: green;
+  }
+
+  div.container .absolute {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 50px;
+    background-color: pink;
+    border-color: red;
+  }
+  ```
+
+  ![Absolute position](./resources/images/css/layout/absolute2.png)
+* [Position Absolute using container example](./examples/css/layout/absolute2.html)
+
+* Now that we added a parent container the absolute element will get the initial position from the container element instead of the body
+* In some way we can say that using absolute position in this way is like creating a relative position between the parent and child element
+* To be able to create this type of layout we need to remember that the parent element must have a `position:relative` position
+
+  **Example:**
+  ```css
+  body {
+    position: relative;
+    border: 2px solid orange;
+    height: 400px;
+    padding: 0;
+    margin: 0;
+    font-size: 40px;
+  }
+
+  div.absolute {
+    position: absolute;
+    border: 1px solid black;
+    padding: 80px;
+  }
+
+  div.first {
+    background-color: red;
+    top: 20px;
+    left: 20px;
+    z-index: 1;
+  }
+
+  div.second {
+    background-color: green;
+    top: 60px;
+    left: 60px;
+    z-index: 2;
+  }
+  ```
+  ```html
+    <body>
+      <div class="absolute first">First Div.</div>
+      <div class="absolute second">Second Div</div>
+    </body>
+  ```
+
+  ![Absolute position](./resources/images/css/layout/absolute3.png)
+
+* In this case we can use the **z-index** property to change the way elements will overlap
+* Position value: a number
+* Lower numbers are overlap]ped by higher ones
+* [MDN z-index doc](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index)
+
+  **Example:**
+  ```css
+  div.first {
+    z-index: 2;
+  }
+
+  div.second {
+    background-color: green;
+    top: 60px;
+    left: 60px;
+    z-index: 1;
+  }
+  ```
+
+  ![Absolute position](./resources/images/css/layout/absolute4.png)
+
+* [Position Absolute z-index example](./examples/css/layout/absolute3.html)
+
+#### Practice
+[Exercise 21](exercises/css/ex_21.md)
+
+#### Fixed
+* The element is removed from the normal document flow
+* No space is created for the element in the page layout
+* It is positioned relative to the screen's viewport and doesn't move when scrolled
+* Its final position is determined by the values of `top, right, bottom, and left`
+
+  **Example:**
+  ```css
+  div {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  ```
+
+  **Example:**
+  ```css
+  body {
+    margin: 0;
+    padding: 0 50px 0 250px; 
+    background: linear-gradient(180deg, #ddd, #111);
+    
+  }
+
+  div {
+    text-align: justify;  
+    margin-bottom: 20px;
+    border: 1px solid blue;
+  }
+
+  .fixed {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    border: 1px solid #444;
+    background-color: #ccc;
+    color: #444;
+    padding: 50px;
+  }
+  ```
+
+  ![Fixed position](./resources/images/css/layout/fixed1.png)
+
+* If we scroll down the static elements will follow the scroll flow
+* The fixed element is going to stay in the same possition
+
+  ![Fixed position](./resources/images/css/layout/fixed2.png)
+* [Position fixed example](./examples/css/layout/fixed.html)
+
+#### Practice
+[Exercise 22](exercises/css/ex_22.md)
+
+#### Sticky
+* The element is positioned according to the normal flow of the document
+* Offset relative to its flow root and containing block based on the values of `top, right, bottom, and left` 
+* The offset does not affect the position of any other elements
+* By specification, `will not work inside element with overflow: hidden or auto`
+
+  **Example:**
+  ```css
+  div {
+    position: sticky;
+  }
+  ```
+
+  **Example:**
+  ```css
+  body {
+    margin: 0;
+    border: 1px solid orange;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  h1 {
+    border: 2px solid black;
+    background-color: #444;
+    color: white;
+    margin: 0;
+    margin-bottom: 10px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding-left: 20px;
+  }
+
+  div {
+    text-align: justify;
+    margin-bottom: 10px;
+    padding: 0 20px;
+  }
+  ```
+
+* In this example the h1 elements are positioned using a sticky value
+
+  ![Sticky position](./resources/images/css/layout/sticky1.png)
+
+* As we scroll the document the browser will stick each h1 element to the same position
+
+  ![Sticky position](./resources/images/css/layout/sticky2.png)
+
+* Each element is replaced if the section is over and there's other sticky elements
+
+  ![Sticky position](./resources/images/css/layout/sticky3.png)
+
+* [Position sticky example](./examples/css/layout/sticky.html)
+
+#### Practice
+[Exercise 23](exercises/css/ex_23.md)
+
+### Float
+* Floats is a technique that allows the elements to **float** to the `left or right` of one another, rather than the default of sitting on top of one another
+* Property values: **none, left & right**
+* The main uses of floats are to lay out columns and float text around an image
+* [MDN float doc](https://developer.mozilla.org/en-US/docs/Web/CSS/float)
+
+  **Example:**
+  ```css
+  img {
+    float: left;
+  }
+  ```
+
+  **Example:**
+  ```css
+  img {
+    border: 2px solid orange;
+    margin: 20px 30px 20px 0;
+  }
+  ```
+
+* By default if we add a image bettwen text it's going to look like this:
+
+  ![Float](./resources/images/css/layout/float1.png)
+
+* If we float the element to the left the text can flow around it
+
+  **Example:**
+  ```css
+  img {
+    float: left;
+    border: 2px solid orange;
+    margin: 20px 30px 20px 0;
+  }
+  ```
+  ![Float](./resources/images/css/layout/float2.png)
+
+* [Float image example](./examples/css/layout/float1.html)
+
+* We can use float with other elements to create a different layout
+* As we're going to float the elements we'll use the width property too
+* For example we can create a 2 column layout:
+
+  **Example:**
+  ```css
+  div {
+    float: left;
+    width: 50%;
+  }
+  ```
+
+  ![Float](./resources/images/css/layout/float3.png)
+
+* [Float image example](./examples/css/layout/float2.html)
+
+* In this example we float boath div elements to the left so each will position beside the other one
+* We set the width value to 50% so each of them will cover half of the parent container
+* When we float elements the parent container doesn't know the height of the elements
+* In this case we need to set a height to the parent element
+
+### Clear
+* The **clear** property specifies whether an element can be next to floating elements that precede it or must be moved down (cleared) below them
+* This property applies to both floating and non-floating elements
+* Property values: **none, left, right & both**
+* [MDN clear doc](https://developer.mozilla.org/en-US/docs/Web/CSS/clear)
+
+  **Example:**
+  ```css
+  /* This way we remove any floating elements from both sides */
+  div {
+    clear: both;
+  }
+  ```
+
+  **Example:**
+  ```css
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  div {
+    border: 1px solid black;
+    background-color: #eee;
+    padding: 20px;
+  }
+
+  .floating {
+    float: left;
+    width: 30%;
+  }
+  ```
+
+  ```html
+    <body>
+      <div class="floating">Floating Div</div>
+      <div class="floating">Floating Div</div>
+      <div class="clear">Figurative text</div>
+    </body>
+  ```
+
+  ![Clear](./resources/images/css/layout/clear.png)
+
+* [Clear example](./examples/css/layout/clear.html)
+
+* To know more about floating elements read this [Great CSS tricks guide](https://css-tricks.com/all-about-floats/)
+* To learn more about `position and float` read [learn CSS positioning in ten steps guide](http://www.barelyfitz.com/screencast/html-training/css/positioning/)
+* [Don't overthink it grids tutorial](https://css-tricks.com/dont-overthink-it-grids/)
+
+#### Practice
+[Exercise 24](exercises/css/ex_24.md)
+
+[Exercise 25](exercises/css/ex_25.md)
+
+## Media Query
+* Media query are a great way to apply CSS only to selected devices depending on their type or characteristics
+* For example we can apply CSS only when printing a document or if the device screen is bigger or smaller than a specific value
+* Using Media query we can make our site responsive
+* Grids system already helps us dealing with responsive design
+* Use the **@media** to specify a media query
+* To test different devices use the [developers tools device mode](https://developers.google.com/web/tools/chrome-devtools/device-mode)
+* [CSS Tricks - media queries for standard devices](https://css-tricks.com/snippets/css/media-queries-for-standard-devices)
+
+  **Example:**
+  ```css
+  @media print {
+    /* This style will only be apply to print devices */
+    div {
+      color: black;
+      background-color: white;
+    }
+  }
+  ```
+
+  **Example:** 
+  ```css
+  body {
+    background-color: blue;
+    color: white;
+  }
+
+  @media print {
+    body {
+      background-color: white;
+      color: black;
+    }
+  }
+  ```
+
+* We can set the default values for all media types and then override the specific one
+
+  ![Media Print](./resources/images/css/media.png)
+* [Media Query print example](./examples/css/media/print.html)
+
+* Also we can select devices by specific characteristics
+* Bootstrap for example uses the following configuration for different displays:
+  * Extra small devices: Phones width < 768px
+  * Small devices: Tablets width ≥768px
+  * Medium devices: Desktops width ≥992px
+  * Large devices: Desktops width ≥1200px
+
+  **Example:** 
+  ```css
+  body {
+    background-color: white;
+  }
+
+  @media only screen and (max-width: 768px) {
+    body {
+      background-color: yellow;
+    }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 992px) {
+    body {
+      background-color: pink;
+    }
+  }
+  ```
+
+* We configure a couple of media query so the body background color will change deppending the device screen resolution
+* Use the `and` operator to add more than one rule
+
+* [Media Query example](./examples/css/media/resolution.html)
+
+* Also we can specify the device **orientation** using **landscape or portrait** as values
+
+  **Example:** 
+  ```css
+  body {
+    background-color: white;
+  }
+
+  @media only screen {
+    /* iPhone X in landscape */ 
+    @media (min-device-width : 375px) and (max-device-width : 812px)  and (-webkit-device-pixel-ratio : 3) and (orientation : landscape) {
+      body {
+        background-color: yellow;
+      }  
+    }
+
+    /* iPhone X in portrait */ 
+    @media (min-device-width : 375px) and (max-device-width : 812px)  and (-webkit-device-pixel-ratio : 3) and (orientation : portrait) {
+      body {
+        background-color: blue;
+      }  
+    }
+  }
+  ```
+
+* To learn more about device orientation read the [MDN Managing screen orientation guide](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Managing_screen_orientation)
+* For mobile devices we need to add the following meta tag to scale the document
+* [MDN responsive meta tag doc](https://css-tricks.com/snippets/html/responsive-meta-tag)
+
+  **Example:**
+  ```html
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  ```
+
+#### Practice
+[Exercise 26](exercises/css/ex_26.md)
+
+## Extra
+
+### Flexbox
+* Now we can use flexbox to create fluid layouts
+* Read the following guides and tutorials:
+  * [CSS Tricks - Complete guide to flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox)
+  * [Flexbox Froggy game](http://flexboxfroggy.com)
+  * [CSS Tricks - Designing a product page layout with flexbox](https://css-tricks.com/designing-a-product-page-layout-with-flexbox)
+  * [Flex Cheatsheet](https://yoksel.github.io/flex-cheatsheet)
+  * [CSS Tricks - Don't overthink flexbox](https://css-tricks.com/dont-overthink-flexbox-grids)
+  * [Flexbox Zombies](https://flexboxzombies.com/p/flexbox-zombies)
+  * [Wes Bos - flexbox io](https://flexbox.io)
+  * [CSS3 Flexbox](https://www.pandaqi.com/Website/css3-flexbox)
+  * [CSS Grid replace flexbox](https://css-tricks.com/css-grid-replace-flexbox)
+  * [The ultimate CSS battle grid vs Flexbox](https://hackernoon.com/the-ultimate-css-battle-grid-vs-flexbox-d40da0449faf)
+  * [CSS Grid Garden](https://cssgridgarden.com)
+
+### Grid
+* CSS Grid Layout is the most powerful layout system available in CSS. It is a 2-dimensional system, meaning it can handle both columns and rows, unlike flexbox which is largely a 1-dimensional system
+* Read the following guides to learn more about this new system
+  * [CSS Tricks - Complete guide to grid](https://css-tricks.com/snippets/css/complete-guide-grid)
+  * [Learn layout guide](http://learnlayout.com)
+  * [Wes Bos - grid io](https://cssgrid.io/)
+  * [Introduction to CSS Grid - by Suilarso](https://github.com/Suilarso/CSS_Grid)
+  * [FreeCodeCamp - How to make your html responsive by adding a single line of css](https://medium.freecodecamp.org/how-to-make-your-html-responsive-by-adding-a-single-line-of-css-2a62de81e431)
+  * [Learn CSS Grid for free - 14 interactive screencasts](https://scrimba.com/g/gR8PTE)
+
+### CSS animation
+[CodeSchool - Adventures in Web animations](https://www.codeschool.com/courses/adventures-in-web-animations)
+
+## Congratulations, you made it, now you know CSS and can enjoy this great joke!!
+![Family Guy CSS](./resources/images/css/css.gif)
+
+#### Practice
+* Now you're ready to style your personal site and show it to the rest of the world!
+
+## Let's Checkout Javascript
+* [<- Git](git.md) - [JavaScript ->](javascript.md)
   
