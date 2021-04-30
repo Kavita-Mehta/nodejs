@@ -14,6 +14,8 @@
   * `Structuring the web`
 * [CSS](css.md)
   * `.thumbs { vertical-align: top; }`
+* [Bootstrap](bootstrap.md)
+  * `Giving complex CSS the boot`
 * [JavaScript](javascript.md)
   * `Promise you will enjoy this`
 
