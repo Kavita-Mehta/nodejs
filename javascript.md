@@ -1361,3 +1361,669 @@ constantVariable = otherValue;
 
 [Exercise 44](./exercises/js/ex_44.md)
 
+### String slice
+* The **slice** method extracts a section of a string and returns it as a new string
+* This method accepts two parameters slice(start, end)
+* Use 0 index for the beginning of the text
+* The end parameter is optional and if we don't pass any value it will return the rest of the text
+
+  **Example:**
+  ```js
+  const text = 'I <3 JavaScript!!';
+  const result = text.slice(4, 15);
+
+  console.log(result); // JavaScript
+  ```
+
+* Counting from the beginning we have 4 index before the **J** letter
+* Then we slice the string until the 15 index
+* The final result is the JavaScript word
+* Also we can avoid passing the second slice parameter and get the rest of the text from a starting point until the end
+
+  **Example:**
+  ```js
+  const text = 'I <3 JavaScript!!';
+  const result = text.slice(4);
+
+  console.log(result); // JavaScript!!
+  ```
+
+* The end parameter can be a negative value
+* When using negative values it will position at the end of the string and start counting backwards
+
+  **Example:**
+  ```js
+  const text = 'JavaScript and Java are not the same';
+  const result = text.slice(0, -25); // JavaScript
+
+  console.log(result);
+  ```
+
+#### Practice
+[Exercise 45](./exercises/js/ex_45.md)
+
+* The **substr** method returns the part of a string between the start index and a number of characters after it
+* We can also use 2 parameters (start and end)
+* First parameter is the substring start
+* Second parameter is the number of characters
+
+  **Example:**
+  ```js
+  const text = 'I love JavaScript!!';
+  const result = text.substr(7, 10);
+
+  console.log(result); // JavaScript
+  ```
+
+  **Example:**
+  ```js
+  const text = 'I love JavaScript!!';
+  const jsText = 'JavaScript';
+  const result = text.substr(7, jsText.length);
+
+  console.log(result); // JavaScript
+  ```
+
+#### Practice
+[Exercise 46](./exercises/js/ex_46.md)
+
+* You can learn more about [slice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice) and [substr](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr) reading the MDN guides
+
+### String split
+* The **split** method splits a String object into an array of strings by separating the string into substrings, using a specified separator string to determine where to make each split
+* The first method parameter will be the separator value to split the string by (also known as a "delimiter")
+* We'll get an **array** object as result
+* For now think about an **array** as a list or collection of elements (in this case strings)
+* Learn more about the [split](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split) method on the MDN guide
+
+  **Example:**
+  ```js
+  let friends = 'tute, mati, pepe, raul, juan, marta, agus, loli';
+  let friendsArray = friends.split(',');
+
+  console.log(friendsArray);
+  /* 
+  [ 
+    'tute',
+    ' mati',
+    ' pepe',
+    ' raul',
+    ' juan',
+    ' marta',
+    ' agus',
+    ' loli' 
+  ]
+  */
+  ```
+
+#### Practice
+[Exercise 47](./exercises/js/ex_47.md)
+
+* The String object has a lot of methods that we can use
+* Read about them on the [MDN string guide -  methods section](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+* Read about:
+  * String.prototype.includes()
+  * String.prototype.indexOf()
+  * String.prototype.repeat()
+  * String.prototype.replace()
+  * String.prototype.trim()
+  * And more
+* Try using these methods on your own code!! `it will be 'fun'.toUpperCase()`
+* We don't need to memorize all the methods, just know that they exist and what they can do for us :)
+
+## Number methods
+* The Number JavaScript object is a wrapper object allowing you to work with numerical values
+* Great learning project: Find out about wrappers and why Strings are different than "primitives" in most computer languages
+
+### parseInt
+* The **parseInt** method parses a string argument and returns an integer of the specified radix or base
+* This method returns an integer number parsed from the given string
+* If the first character cannot be converted to a number, **NaN** (not a number) is returned
+* [MDN parseInt doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/parseInt)
+
+  **Example:**
+  ```js
+  const numberAsAString = '3';
+
+  console.log(typeof numberAsAString) // string
+
+  const number = parseInt(numberAsAString);
+
+  console.log(number); // 3
+
+  console.log(typeof number) // number
+  ```
+
+  **Example:**
+  ```js
+  const numberAsAString = '3.20';
+  const number = parseInt(numberAsAString);
+
+  console.log(number); // 3
+  ```
+
+* We can get a **number** from a **string**
+* parseInt will return an integer number
+
+### parseFloat
+* The **parseFloat** function parses an argument and returns a floating point number
+* This method returns a floating point number parsed from the given value
+* If the value cannot be converted to a number, NaN is returned
+* [MDN parseFloat doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseFloat)
+* What happens if you pass in a String representation of an Integer (3) instead of a Float (3.14)? 
+
+  **Example:**
+  ```js
+  const piAsText = '3.14';
+
+  console.log(typeof piAsText); // string
+
+  const pi = parseFloat(piAsText);
+
+  console.log(pi);
+
+  console.log(typeof pi); // number
+  ```
+
+### Number toString
+* The **toString** method returns a string representing the specified Number object
+* [MDN number toString doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)
+
+  **Example:**
+  ```js
+  let number = 4;
+
+  console.log(typeof number); // number
+
+  let message = number.toString() + '2';
+
+  console.log(message); // 42
+
+  console.log(typeof message); // string
+  ```
+
+* In this example we transfer the number value into a string one
+* We use the + operator and instead of adding both values together it will concatenate them as they are both strings
+* This is why we need to be careful of which type of value we operate with
+
+#### Practice
+[Exercise 48](./exercises/js/ex_48.md)
+
+## Conditionals / Making decisions in your code
+* In any programming language, code needs to make decisions and carry out actions accordingly depending on different inputs
+* For example, in a game, if the player's number of lives is 0, then it's game over
+* In a weather app, if it is being looked at in the morning, show a sunrise graphic; show stars and a moon if it is nighttime
+* Conditional statements allow us to represent this kind of decision making in JavaScript from the choice that must be made, to the resulting outcome of those choices
+* [MDN conditionals doc](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+
+## If statement
+* The **if** statement executes a statement if a specified condition is **true**
+* If the condition is **false**, another statement can be executed
+* [if else](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else)
+
+  ![if](./resources/images/js/if.gif)
+
+  **Example:**
+  ```js
+  // Basic if statement structure
+  if (condition) {
+    // If statement body
+    // We'll add the code that we want to execute if the condition is true
+  }
+  ```
+
+* When coding we need to make decisions based on the conditions that we need
+* The if statements will execute this conditions and check whether they are true or false (boolean / true & false values, more about this soon)
+* If the statement is true then it will execute the if statement body
+* If not, in case the condition is false it will ignore the if statement body and won't execute the code
+* Whether the condition it's true or false the code after the if statement it's going to be executed anyway following the natural code flow
+
+  **Example:**
+  ```js
+  if (true) {
+    console.log('Using a if statement with a true condition');
+  }
+  ```
+
+* In this example we use a **true** boolean value as condition so it's true all the time (its a literal value, no condition here!)
+* So we can read this like: `If condition is true then execute the following console.log()`
+
+  **Example:**
+  ```js
+  const playerLifer = 0;
+
+  if (playerLife == 0) {
+    console.log('Game Over!!!!');
+  }
+  ```
+
+* We can read this statement like: `if the players life is 0 then show a Game Over message`
+* It's easy to use **if condition then** phrase to detect that we need a if statement
+* Once the if statement has been executed the code flow continues
+
+  **Example:**
+  ```js
+  const number = 1;
+
+  if (number >= 2) {
+    console.log('We won\'t see this message as the condition it\'s always false');
+  }
+
+  console.log('We will see this massege all the time as it doesn\'t depend on the if statement and the code flows keeps on going');
+  ```
+
+#### Practice
+[Exercise 49](./exercises/js/ex_49.md)
+
+[Exercise 50](./exercises/js/ex_50.md)
+
+[Exercise 51](./exercises/js/ex_51.md)
+
+## If / else statement
+* Now we know how to use a if statement to check for a given condition but we only care about when it's a true value
+* In some cases we need to control also what happens in case the condition is false
+
+  ![if/else](./resources/images/js/if-else.gif)
+
+  **Example:**
+  ```js
+  if (condition) {
+    // if true then it will execute this code
+  } else {
+    // if not, then it will execute this code
+  }
+  ```
+
+  ```js
+  const number = 5;
+
+  if (number === 2) {
+    console.log('The number is 2');
+  } else {
+    console.log('The number is not 2');
+  }
+  ```
+
+* We can read this code like: `IF number equals 2 THEN show the number is 2 message ELSE show the number is not 2 message` 
+
+#### Practice
+[Exercise 52](./exercises/js/ex_52.md)
+
+[Exercise 53](./exercises/js/ex_53.md)
+
+[Exercise 54](./exercises/js/ex_54.md)
+
+### Conditional ternary operator
+* The conditional **ternary operator** is the only JavaScript operator that takes three operands
+* This operator is frequently used as a shortcut for the if statement
+* To use this operator we do it the following way: `(condition) ? true : false`
+* If the condition is true then it will execute the code that follows the question character
+* In case it's false then it will execute the code that follows the double colon character
+
+  **Example:**
+  ```js
+  let number = 2;
+  let message = (number === 2) ? 'The number is 2' : 'The number is not 2';
+
+  console.log(message);
+  ```
+
+#### Practice
+[Exercise 55](./exercises/js/ex_55.md)
+
+[Exercise 56](./exercises/js/ex_56.md)
+
+[Exercise 57](./exercises/js/ex_57.md)
+
+### If else if
+* We can also use if else if to check for more conditions
+
+  **Example:**
+  ```js
+  if (condition) {
+    // This code gets executed if the condition it's true
+  } else if (otherCondition) {
+    // This code gets executed if the otherCondition it's true
+  } else {
+    // This code gets executed if none of the other conditions where true
+  }
+  ```
+
+  ```js
+  const name = 'Marta';
+
+  if (name === 'Miriam') {
+    console.log('The name is Miriam');
+  } else if (nombre === 'Felipa') {
+    console.log('The name is Felipa');
+  } else {
+    console.log('The name is not Miriam or Felipa');
+  }
+  ```
+
+* In this example we ask for different conditions
+* We can keep on adding if else if statements to check for more conditions
+* Our code might not as easy to read and follow if we use too many if else if statements
+* Try to avoid nesting too many if else if statements
+
+#### Practice
+[Exercise 58](./exercises/js/ex_58.md)
+
+[Exercise 59](./exercises/js/ex_59.md)
+
+[Exercise 60](./exercises/js/ex_60.md)
+
+### Switch
+* The switch statement evaluates an expression
+* Matching the expression's value to a case clause
+* Then executes statements associated with that case
+* If we don't break it will execute the follow the matching case
+
+  ```js
+  const name = 'Marta';
+
+  if (name === 'Miriam') {
+    console.log('The name is Miriam');
+  } else if (nombre === 'Felipa') {
+    console.log('The name is Felipa');
+  } else {
+    console.log('The name is not Miriam or Felipa');
+  }
+  ```
+
+* If we keep nesting statements it's going to be difficult to follow this code
+
+  ```js
+  const name = 'Marta';
+
+  if (name === 'Miriam') {
+    console.log('The name is Miriam');
+  } else if (name === 'Felipa') {
+    console.log('The name is Felipa');
+  } else if (name === 'Xime') {
+    console.log('The name is Xime');
+  } else if (name === 'Belu') {
+    console.log('The name is Belu');
+  } else {
+    console.log('The name is not Marta, Felipa, Xime or Belu');
+  }
+  ```
+
+* We can acomplish the same result using a **switch** statement
+
+  **Example:**
+  ```js
+  const name = 'marta';
+  let message = null;
+
+  switch (name) {
+    case 'Miriam':
+      message = 'The name is Miriam';
+      break;
+    case 'Felipa':
+      message = 'The name is Felipa';
+      break;
+    case 'Xime':
+      message = 'The name is Xime';
+      break;
+    case 'Belu':
+      message = 'The name is Belu';
+      break;
+    default:
+      message = 'The name is not Marta, Felipa, Xime or Belu';
+  }
+
+  console.log(message);
+  ```
+* The optional **break** statement associated with each case label ensures that the program breaks out of switch once the matched statement is executed and continues execution at the statement following switch
+* If break is omitted, the program continues execution at the next statement in the switch statement
+* [MDN switch doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch)
+
+#### Practice
+[Exercise 61](./exercises/js/ex_61.md)
+
+[Exercise 62](./exercises/js/ex_62.md)
+
+[Exercise 63](./exercises/js/ex_63.md)
+
+
+## true and false (true and false values)
+* In JavaScript we have values that are true and false
+* This means that some values might be true and some values might be false
+* For true and false values we use boolean
+* When using some values as condition they will be evaluated as true (true) or false (false) values depending the value data type
+* So, a **true** value is a value that is considered true when evaluated in a Boolean context
+* All values are true unless they are defined as false
+* A false value is a value that translates to false when evaluated in a Boolean context
+* The following values are considered false values:
+  * false
+  * null
+  * undefined
+  * 0
+  * NaN
+  * ''
+
+  **Example:**
+  ```js
+  if ('') {
+    // This code won't get executed as an empty string is a false value
+  } else {
+    // This code gets executed
+  }
+  ```
+
+  **Example:**
+  ```js
+  const name = '';
+
+  if (name === '') {
+    console.log('Please input your name');
+  } else {
+    console.log('Welcome: ' + name);
+  }
+  ```
+
+* We can also try the following condition
+
+  **Example:**
+  ```js
+  const name = '';
+
+  if (name) {
+    console.log('Welcome: ' + name);
+  } else {
+    console.log('Please input your name');  
+  }
+  ```
+
+* If name is empty then it will be evaluated as a false value so in this case we don't need to compare it to an empty string
+* true and false values are an easy way to use some conditions
+* One special case is using null:
+
+  **Example:**
+  ```js
+  const name = null;
+
+  if (name) {
+    console.log('welcome: ' + name);
+  } else {
+    console.log('Please input your name');  
+  }
+
+  console.log(typeof name) // object
+  ```
+
+* Using a null value it's going to be evaluated as an object and it will become true
+* When using null we'll have to add an extra validation
+
+  **Example:**
+  ```js
+  const name = null;
+
+  if (name && name !== null) {
+    console.log('welcome: ' + name);
+  } else {
+    console.log('Please input your name');  
+  }
+  ```
+
+* [MDN false doc](https://developer.mozilla.org/en-US/docs/Glossary/false)
+* [MDN true doc](https://developer.mozilla.org/en-US/docs/Glossary/true)
+* [MDN Type Conversion doc](https://developer.mozilla.org/en-US/docs/Glossary/Type_Conversion)
+
+#### Practice
+[Exercise 64](./exercises/js/ex_64.md)
+
+[Exercise 65](./exercises/js/ex_65.md)
+
+#### Iterators
+* It's common that when coding we need to keep repeating the same code execution until a given condition it's true
+* For example I might want to show numbers from 0 to 10 to create a list
+
+  **Example:**
+  ```js
+  console.log(0);
+  console.log(1);
+  console.log(2);
+  console.log(3);
+  console.log(4);
+  console.log(5);
+  console.log(6);
+  console.log(7);
+  console.log(8);
+  console.log(9);
+  console.log(10);
+  ```
+
+* This code works
+* But what about if you need to add more functionality or you need to show more numbers like to a 100 or to a 1000
+* We'll go crazy, right?
+
+  **Example:**
+  ```js
+  console.log('number: ', 0);
+  console.log('number: ', 1);
+  console.log('number: ', 2);
+  console.log('number: ', 3);
+  console.log('number: ', 4);
+  console.log('number: ', 5);
+  console.log('number: ', 6);
+  console.log('number: ', 7);
+  console.log('number: ', 8);
+  console.log('number: ', 9);
+  console.log('number: ', 10);
+  ```
+
+* Thanks we can use iteration to solve this problem
+
+### While
+* The **while statement** creates a loop that executes a specified statement as long as the test condition evaluates to true
+* The condition is evaluated before executing the statement
+
+  **Example:**
+  ```js
+  while (condition) {
+    console.log('This code it\'s goin to be executed until the condition is false');
+  }
+  ```
+
+* Let refactor the numbers code so it works for 10, 100 or 1000 numbers!
+
+  **Example:**
+  ```js
+  let number = 0;
+
+  while (number < 11) {
+    console.log(number);
+    number++;
+  }
+  ```
+
+* With only a couple of lines of code we can solve the previous feature
+* Now we only need one change to show up to 1000 numbers
+
+  **Example:**
+  ```js
+  let number = 0;
+
+  while (number < 1001) {
+    console.log(number);
+    number++;
+  }
+  ```
+
+* Also, if we need to change the code to add more functionality we can do it in a really simple and easy way:
+
+  **Example:**
+  ```js
+  let number = 0;
+
+  while (number < 1001) {
+    console.log('number: ', number);
+    number++;
+  }
+  ```
+
+* Using while we can repeat the block code until the condition is false
+* In each iteration we use number++ to increase the number value
+* Once we reach 1001 number will no longer be lower than 1001 so the condition will be false
+* The code will continue the normal code flow
+* We need to be careful as the condition might be always true and this script will continue to execute for ever
+* At some point the engine will throw a recursivity exception and we'll get an error
+* Always be sure to change the condition so it becomes false at some point
+
+  **Example:**
+  ```js
+  while (true) {
+    console.log('Server will run out after executing this code many times!');
+  }
+
+  let number = 0;
+
+  while (number < 10000) {
+    console.log('number: ', number);
+    // We never changed number value so it's always going to be 0 and then less than 10000 so the condition will always be true :(
+  }
+
+  ```
+* The while statement will not be executed if the condition is false from the beginning
+
+  **Example:**
+  ```js
+  while (false) {
+    console.log('This code doesn\'t get executed');
+  }
+
+  let number = 1000;
+
+  while (number < 10) {
+    console.log('number: ', number);
+    number++;
+    // All this code won't get executed as the initial condition is false
+  }
+  ```
+
+* If the condition is false the engine will ignore it
+* [MDN while doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while)
+
+#### Practice
+[Exercise 66](./exercises/js/ex_66.md)
+
+[Exercise 67](./exercises/js/ex_67.md)
+
+[Exercise 68](./exercises/js/ex_68.md)
+
+[Exercise 69](./exercises/js/ex_69.md)
+
+[Exercise 70](./exercises/js/ex_70.md)
+
+[Exercise 71](./exercises/js/ex_71.md)
+
+[Exercise 72](./exercises/js/ex_72.md)
+
+[Exercise 73](./exercises/js/ex_73.md)
+
+[Exercise 74](./exercises/js/ex_74.md)
+
+[Exercise 75](./exercises/js/ex_75.md)  (advance)
+
