@@ -3475,5 +3475,532 @@ constantVariable = otherValue;
 
 [Exercise 162](./exercises/js/ex_162.md)
 
+## Callback
+* A **callback function** `is a function passed into another function as an argument`, which is then invoked inside the outer function to complete some kind of routine or action
+* JavaScript is a asynchronous language
+* This mean that we don't know how the code is going to execute
+* We can't be sure that the previous statement has executed
+* Using callbacks we can handle our async calls
 
+  **Example:**
+  ```js
+  function doSomething(functionAsAParameter) {
+    console.log('do something');
+    functionAsAParameter();
+  }
+
+  const done = function() {
+    console.log('done');
+  }
+
+  doSomething(done);
+  ```
+
+* In this example we defined a doSomething function that accepts a function as parameter
+* The doSomething function shows a message as output and then executes the function that got as parameter
+* As the functionAsAParameter is the done function it will get executed 
+* An easier way to see this functionality can be in the following way:
+
+  **Example:**
+  ```js
+  const done = function() {
+    console.log('done');
+  }
+
+  function doSomething() {
+    console.log('do something');
+    done();
+  }
+
+  doSomething();
+  ```
+
+* We get a similar functionality doing it this way but in the first example we use a function as parameter
+* In this example we just use a global function to do something similar to what we can do with a callback
+* Callback important concepts:
+  * A callback is just a function passed as parameter to other function
+  * The function that received the function as parameter will call it
+
+  **Example:**
+  ```js
+  let number = 0;
+
+  function add(n, callback) {
+    n++;
+    callback(n);
+  }
+
+  add(number, function(result) {
+    console.log(result); // 1
+  });
+
+  console.log(number); // 0
+  ```
+
+* A callback function can get one or many parameters
+* In this example we call the add function passing a number and a function as parameter
+* After incrementing the number in one will call the callback function
+* Other way to understand this code:
+
+  **Example:**
+  ```js
+  let number = 0;
+
+  let finalResult = function(result) {
+    console.log(result);
+  }
+
+  function add(n, callback) {
+    n++;
+    callback(n);
+  }
+
+  add(number, finalResult);
+
+  console.log(number); // 0
+  ```
+
+* We have been using this concept without knowing it to iterate over arrays:
+
+  **Example:**
+  ```js
+  let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  // Callback
+  numbers.forEach(function(number) {
+    console.log(number);
+  })
+
+  // Callback
+  let evenNumbers = numbers.filter(function(number) {
+    return number % 2 === 0;
+  });
+
+  // Callback
+  let result = numbers.reduce(function(result, number) {
+    return result + number;
+  });
+
+  // Callback
+  let mappedNumbers = numbers.map(function(number) {
+    return number + 10;
+  });
+  ```
+
+* We can see that the filter, reduce and map functions receive a function as parameter
+* This functions will get called internally
+* If you know jQuery you will find this code familiar
+
+  **Example:**
+  ```js
+  $( function() { 
+    console.log( "ready!" ); 
+  } );
+  ```
+
+* In this case jQuery uses $() as a function and we can pass a function that will get executed once the DOM is loaded
+* We pass the $() a function, so we're passing a callback
+* jQuery uses this code to get all the code that needs to execute once the document is loaded
+* We'll use this concept a lot when coding JavaScript
+* Using callbacks we can handle JavaScript in an async way
+
+* [MDN callback doc](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)
+* [Callback Hell](http://callbackhell.com)
+* [MDN using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
+
+## Hoisting
+* JavaScript (ES5) is an extremely flexible language and will happily `allow you to declare a variable almost anywhere`
+
+  ```js
+  console.log(name);
+  var name = "nico";
+  ```
+
+  ![Hoisting](resources/images/js/hoisting.png)
+
+* Also, we can do this with functions
+
+  **Example:**
+  ```js
+  greet(); // Hi i'm showing a message without being defined
+
+  function greet() {
+    console.log('Hi i\'m showing a message without being defined :)');
+  }
+  ```
+* This practice it's called **Hoisting**
+* Remember that JavaScript was created to be an easy language to use and learn
+* When running the code JavaScript will go through the code 2 times
+* First time it will check the variables and functions definition and move them to the higher part of the code
+* Second time will execute the rest of the code
+
+  **Example:**
+  ```js
+  function greet() {
+    console.log('Hi i\'m showing a message without being defined :)');
+  }
+
+  greet(); // Hi i'm showing a message without being defined
+  ```
+
+* This is a better way to write our code
+* First we declare the function and then we use it
+* Hoisting can clear unexpected bugs
+* This won't happen in the newer node.js versions
+* You can prevent this problem setting your code to the [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
+* Use `use strict` in the following way
+
+  **Example:**
+  ```js
+  'use strict';
+
+  console.log(name);
+  var name = "nico";
+  ```
+
+* [MDN Hoisting doc](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
+* [Back to basics JavaScript hoisting](https://www.sitepoint.com/back-to-basics-javascript-hoisting)
+* [JavaScript hoisting explained](https://code.tutsplus.com/tutorials/javascript-hoisting-explained--net-15092)
+* [Understanding hoisting in JavaScript](https://scotch.io/tutorials/understanding-hoisting-in-javascript)
+* [5 JavaScript bad parts that are fixed in ES6](https://medium.freecodecamp.org/5-javascript-bad-parts-that-are-fixed-in-es6-c7c45d44fd81)
+
+## Scope
+* **Scope** is the current `context of execution`
+* The context in which `values and expressions are "visible," or can be referenced`
+* In a simple way it's which variables I can access from different sections of the code
+* JavaScript has global variables that can be accessed from everywhere
+
+  **Example:**
+  ```js
+  var name = 'Pedro';
+
+  function showName() {
+    console.log(name);
+  }
+
+  showName(); // Pedro
+  console.log(name); // Pedro
+  ```
+
+* In this example we defined the **name** variable as global
+* Since it's a global variable we can access it from any place
+* In this example we access the name value within the function
+* This is not a good practice as the function is accessing the global environment
+* A function should not depend on the context to function
+* In this case it's much better to pass the variable as a parameter
+* Another bad example: as it's a global variable we can also change it's value too
+
+  **Example:**
+  ```js
+  var name = 'Pedro';
+
+  function showName() {
+    name = 'Marta';
+    console.log(name);
+  }
+
+  console.log(name); // Pedro
+
+  showName();
+  console.log(name); // Marta
+  ```
+
+* In this example we see how we can change the name value
+* This can affect or change our code workflow so it's better if we pass the value as a parameter and then return a new value if we need it
+* Local variables are the ones that we only can access from the same place they were defined
+
+  **Example:**
+  ```js
+  function showName() {
+    const name = 'Marta';
+    console.log(name);
+  }
+
+  showName();
+  console.log(name); // name is not defined
+  ```
+
+* In this example the **name** variable is defined as a local variable as it only can be accessed within the function showName
+* We can say that scope in JavaScript works from inner to outer bounds (it will make sense, I promise)
+* let and const have block element scope
+* var does not have block scope
+
+  **Example:**
+  ```js
+  {
+    var name = 'Marta';
+    console.log(name); // Marta
+  }
+
+  console.log(name); // Marta
+
+  {
+    let otherName = 'Pepe';
+    console.log(otherName); // Pepe
+  }
+
+  console.log(otherName); // otherName is not defined
+  ```
+
+* Using var won't give us block element scope, that's why we can access the **otherName** variable outside the { }
+* Using **let** or **const** changes this as they have block level scope
+* So now you know, use let and const whenever you can to avoid having unexpected problems
+
+### Functions inside functions
+* Functions can have other functions inside of them
+
+  **Example:**
+  ```js
+  function welcome() {
+    
+    function greeting() {
+      console.log('Hi Coco!!!');
+    }
+    
+    greeting();
+  }
+
+  welcome(); // Hi Coco!!!
+  greeting(); // greeting is not defined
+  ```
+* Functions inside (children) another function are not accessible from outside the parent function
+* In this example we see that we can call the **welcome** function but not the **greeting** one as it is an inner function
+* The **greeting** is a local function and it can only be called from inside the **welcome** function
+
+  **Example:**
+  ```js
+  let name = 'Coco';
+
+  function welcome() {
+    console.log(name);
+
+    function greet() {
+      console.log(name);
+    }
+
+    greet();
+  }
+
+  welcome(); // Shows Coco twice
+
+  console.log(name) // Coco
+  ```
+
+* As the **name** variable is global we can access it from anywhere even the **greet** function
+
+  **Example:**
+  ```js
+  let name = 'Coco';
+
+  function welcome() {
+    let message = 'Hi ';
+    console.log(message);
+
+    function greet() {
+      console.log(message);
+    }
+
+    greet();
+  }
+
+  welcome(); // Shows Hi twice
+  console.log(name) // Coco
+  console.log(message) // message is not defined
+  ```
+
+* The **message** variable is defined as local inside the **welcome** function
+* Following the pattern from inside out we can access the **message** variable from the **greet** function and from the **welcome** function body
+* Since **message** is a local variable we can't access it from outside the **welcome** function
+* We can think about child functions being able to access the parent scope
+
+  **Example:**
+  ```js
+  let name = 'Coco';
+
+  function welcome() {
+    let greeting = 'Hi ';
+
+    function greet() {
+      let message = greeting + name;
+      console.log(message);
+    }
+
+    greet();
+    console.log(message); // message is not defined
+  }
+
+  welcome(); // shows hi 2 times
+  console.log(name) // Coco
+  console.log(greeting) // greeting is not defined
+  console.log(message); // message is not defined
+  ```
+
+* Inside the greet function we can access the greeting and name variables
+* We can't access message outside the greet function
+* This is why we can't access message from the welcome or global scope
+
+  **Example:**
+  ```js
+  function welcome(name) {
+    let message = 'welcome ';
+    
+    function greet(value) {
+      return message + ' ' + value;
+    }
+
+    return greet(name);
+  }
+
+  console.log(welcome('Coco')); // welcome Coco
+  ```
+
+* Child functions can even access their parent's parameters
+* This concept is known as **closures**
+* [MDN Scope doc](https://developer.mozilla.org/en-US/docs/Glossary/Scope)
+* [MDN Closures doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
+* [Robert Nyman - Explaining JavaScript scope and closures](https://robertnyman.com/2008/10/09/explaining-javascript-scope-and-closures)
+* [RisingStack - Explaining JavaScript closure scope chain examples](https://community.risingstack.com/explaining-javascript-closure-scope-chain-examples)
+
+## More about functions!
+
+### Arguments
+* The **arguments object** `is an Array-like object` corresponding to the arguments passed to a function
+* It might look like an array but it's not
+* This value will contain all the parameter values that have been passed to the function
+* arguments has a **length** property that returns a number with the amount of parameters that were passed to the function
+
+  **Example:**
+  ```js
+  function greet() {
+    console.log(arguments); // { '0': 'Jarry', '1': 'Coco', '2': 'Nico' }
+    console.log(arguments.length); // 3
+    console.log(arguments[0]); // 'Jarry'
+  }
+
+  greet('Jarry', 'Coco', 'Nico');
+  ```
+
+* As it's an Array-like object we can access the first item using index 0
+
+  **Example:**
+  ```js
+  function greet() {
+    console.log(arguments[0]); // Jarry
+    console.log(arguments[1]); // Coco
+    console.log(arguments[2]); // Nico
+  }
+
+  greet('Jarry', 'Coco', 'Nico');
+  ```
+
+* [MDN arguments doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments)
+
+#### Practice
+[Exercise 163](./exercises/js/ex_163.md)
+
+### Recursion
+* Recursion is an act of a function calling itself
+* Is used to solve problems that contain smaller sub-problems
+* In JavaScript we can call a function inside that same function
+* It's really important when using recursion to add a way to break to avoid recursion for ever
+
+  **Example:**
+  ```js
+  function showNumber(number) {
+    
+    if (number <= 10) {
+      console.log(number)
+      number++;
+      showNumber(number);
+    }
+
+  }
+
+  showNumber(0);
+  ```
+
+* **showNumber** is a recursive function
+* If number is bigger than 10 the **showNumber** function stops calling itself
+
+* [Microsoft - JavaScript recursion](https://docs.microsoft.com/en-us/scripting/javascript/advanced/recursion-javascript)
+* [Difference between recursion and iteration](https://techdifferences.com/difference-between-recursion-and-iteration-2.html)
+
+### Returning a function from a function
+* As we know a function can return a value
+* In JavaScript functions are a type of value
+* So... a function can return a function
+
+  **Example:**
+  ```js
+  function greet() {
+    
+    let otherFunction = function() {
+      console.log('I don\'t know you but this drives me crazzy!!!');
+    }
+    
+    return otherFunction;
+  }
+
+  let myFunction = greet(); // Calling the greet function we get other function back
+
+  console.log(typeof myFunction); // function
+
+  myFunction(); // Call the returned function and get "I don't know you but this drives me crazzy!!!" as output
+  ```
+
+* Using JavaScript scope we can do things like:
+
+  **Example:**
+  ```js
+  function add(number) {
+    
+    let addBothNumbers = function(otherNumber) {
+      return number + otherNumber;
+    }
+    
+    return addBothNumbers;
+  }
+
+  const adding = add(10);
+  const result = adding(20);
+
+  console.log(result); // 30
+  ```
+
+* In example we call the **add** function and pass 10 as parameter
+* The add function returns a function that's **addBothNumbers**
+* This function that we get as result accepts a parameter
+* We assign the returned function in the **adding** variable
+* We can pass a parameter when we call the **adding** function
+* In this case we pass the number 20
+* The **addBothNumbers** gets executed using the **adding** function
+* **addBothNumbers** will add number 20 that is the value that we get from the **otherNumber** param and 10 that was the number passed as parameter to the parent function
+* Using JavaScript scope the **addBothNumbers** still has access to the **number** value
+* At the end we add 10 and 20 using JavaScript scope
+* BOOOOOMMMMM..... Mind Blowing!!!
+
+![mind](resources/images/js/mind.gif)
+
+## Assets / Resources
+
+### You don't know JavaScript series:
+* [Up & Going](https://github.com/getify/You-Dont-Know-JS/blob/master/up%20&%20going/README.md#you-dont-know-js-up--going)
+* [Types & Grammar](https://github.com/getify/You-Dont-Know-JS/blob/master/types%20&%20grammar/README.md#you-dont-know-js-types--grammar)
+* [Scope & Closures](https://github.com/getify/You-Dont-Know-JS/blob/master/scope%20&%20closures/README.md#you-dont-know-js-scope--closures)
+* [this & Object Prototypes](https://github.com/getify/You-Dont-Know-JS/blob/master/this%20&%20object%20prototypes/README.md#you-dont-know-js-this--object-prototypes)
+* [ES6 & Beyond](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20&%20beyond/README.md#you-dont-know-js-es6--beyond)
+* [Async & Performance](https://github.com/getify/You-Dont-Know-JS/blob/master/async%20&%20performance/README.md#you-dont-know-js-async--performance)
+* [ES6 in depth](https://hacks.mozilla.org/category/es6-in-depth)
+* [JS Books](https://jsbooks.revolunet.com/)
+
+## WELCOME TO JAVASCRIPT!!!
+
+![joke](resources/images/js/joke1.jpg)
+
+![joke](resources/images/js/joke2.jpg)
+
+![joke](resources/images/js/joke3.jpg)
+
+## Let's Checkout Browser API
+* [<- CSS](css.md) - [Browser API ->](browserapi.md)
 
