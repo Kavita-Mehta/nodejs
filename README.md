@@ -18,4 +18,6 @@
   * `Giving complex CSS the boot`
 * [JavaScript](javascript.md)
   * `Promise you will enjoy this`
+* [Browser API](browserapi.md)
+  * `Protect and serve`
 
