@@ -866,4 +866,1248 @@
 
 #### Practice
 [Exercise 19](./exercises/browser/ex_19.md)
+### Elements relationship
+* The **parentElement** read-only property returns the DOM node's parent Element, or null if the node either has no parent, or its parent isn't a DOM Element
+* An element that contains other elements is considered a parent element
+
+**Example:**
+* HTML
+  ```html
+  <div>
+    <p>Child element</p>
+  </div>
+  ```
+
+* JS
+  ```js
+  const parragraph = document.querySelector('p');
+  const parent = parragraph.parentElement;
+
+  console.log(parent); // <div></div>
+  ```
+
+* Also, we can retrieve the element's child elements using the `children` property
+* An element that inside other element is consider a child element
+* This method returns an HTMLCollection
+
+**Example:**
+* HTML
+  ```html
+  <div>
+    <p>Child Element</p>
+    <p>Child Element</p>
+    <p>Child Element</p>
+    <p>Child Element</p>
+  </div>
+  ```
+
+* JS
+  ```js
+  const div = document.querySelector('div');
+  const children = div.children;
+
+  console.log(children); // HTMLCollection(4) [p, p, p, p]
+  ```
+
+* As we get a collection back we can use indexes to access the children in different positions
+
+**Example:**
+* HTML
+  ```html
+  <div>
+    <p>Child Element</p>
+    <p>Child Element</p>
+    <p>Child Element</p>
+    <p>Child Element</p>
+  </div>
+  ```
+
+* JS
+  ```js
+  const div = document.querySelector('div');
+  const children = div.children;
+  const firstChildElement = children[0];
+
+  console.log(firstChildElement); // <p>Child Element</p>
+  console.log(children.item(0));
+  ```
+
+* In this example we use index 0 to get the first element
+* Also, HTMLCollection has an `item` method that retrieves an element in a specific position
+* We can see 2 different ways of accomplish the same objective (retrieve a child element)
+* Also we could do the same using CSS selectors and querySelector method
+
+* [MDN parentElement doc](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement)
+* [MDN parentElement doc](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement)
+* [MDN HTMLCollection doc ](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection)
+
+#### Practice
+[Exercise 20](./exercises/browser/ex_20.md)
+
+* Elements can have **sibling** 
+* These elements are at the same element level
+
+**Example:**
+* HTML
+  ```html
+    <p>Paragraph element</p>
+    <p>Paragraph element</p>
+    <p>Paragraph element</p>
+  ```
+
+* In this example we can see that all 3 elements are at the same level so they are siblings
+* We can access the previous element using **previousElementSibling** property
+* Also we can get the next element using **nextElementSibling** property
+
+**Example:**
+* HTML
+  ```html
+  <p>Paragraph element 1</p>
+  <p>Paragraph element 2</p>
+  <p>Paragraph element 3</p>
+  ```
+
+* JS
+  ```js
+  const paragraphs = document.querySelectorAll('p');
+  const middleElement = paragraphs[1];
+
+  console.log(middleElement.previousElementSibling);  // <p>Paragraph element 1</p>
+  console.log(middleElement.nextElementSibling);      // <p>Paragraph element 3</p>
+  ```
+
+* [MDN previousElementSibling doc](https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode/previousElementSibling)
+* [MDN nextElementSibling doc](https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode/nextElementSibling)
+
+#### Practice
+[Exercise 21](./exercises/browser/ex_21.md)
+
+### Change element content
+* **innerText** is a property that represents the "rendered" text content of a node and its descendants
+* As a getter, it approximates the text the user would get if they highlighted the contents of the element with the cursor and then copied to the clipboard
+* This feature was originally introduced by `Internet Explorer`, and was formally specified in the HTML standard in 2016 after being adopted by all major browser vendors
+
+**Example:**
+* HTML
+  ```html
+  <p>This is a great text to get using JavaScript</p>
+  ```
+
+* JS
+  ```js
+  const paragraph = document.querySelector('p');
+
+  console.log(paragraph.innerText); // This is a great text to get using JavaScript
+
+  paragraph.innerText = 'JavaScript in browsers is amazing'; 
+
+  console.log(paragraph.innerText); // JavaScript in browsers is amazing
+  ```
+
+* In this example we get the content text from the paragraph using `paragraph.innerText`
+* Also, use the property to set a new value `paragraph.innerText = 'JavaScript in browsers is amazing';`
+* The **textContent** property represents the text content of a node and its descendants
+* [MDN innerText doc](https://developer.mozilla.org/en-US/docs/Web/API/Node/innerText)
+
+**Example:**
+* HTML
+  ```html
+  <p>This is a great text to get using JavaScript</p>
+  ```
+
+* JS
+  ```js
+  const paragraph = document.querySelector('p');
+
+  console.log(paragraph.textContent); // This is a great text to get using JavaScript
+
+  paragraph.textContent = 'JavaScript in browsers is amazing'; 
+
+  console.log(paragraph.textContent); // JavaScript in browsers is amazing
+  ```
+
+* Both `innerText` & `textContent` allows us to get and set an element content
+* They have some differences between them in some special cases and you can read about them on the [MDN textContent doc](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
+
+#### Practice
+[Exercise 22](./exercises/browser/ex_22.md)
+
+* The **innerHTML** property gets or sets the HTML or XML markup contained within the element
+* This property accepts a DOMString containing the HTML serialization of the element's descendants
+* Setting the value of innerHTML removes all of the element's descendants and replaces them with nodes constructed by parsing the HTML given in the string htmlString
+
+**Example:**
+* HTML
+  ```html
+  <p>This is just a paragraph text</p>
+  ```
+
+* JS
+  ```js
+  const paragraph = document.querySelector('p');
+
+  console.log(paragraph.innerHTML); // This is just a paragraph text
+
+  paragraph.innerHTML = '<span>Ohhhhhhhhhhhhhhhh what are we doing??</span>';
+
+  console.log(paragraph.innerHTML); // <span>Ohhhhhhhhhhhhhhhh what are we doing??</span>
+  ```
+
+* Using innerHTML we can retrieve the element content whether it's text or other HTML content
+* We can set the innerHTML property using a string
+* If the string has valid HTML content, the browser will parse it and create the proper elements
+* It's an easy way of creating new elements
+
+**Example:**
+* JS
+  ```js
+  const paragraph = document.querySelector('p');
+  paragraph.innerHTML = '';
+  ```
+
+* This is an easy way to remove all the element content
+* As this property might have some security issues we can use it on some cases
+
+* [MDN innerHTML doc](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML)
+
+#### Practice
+[Exercise 23](./exercises/browser/ex_23.md)
+
+### Using CSS properties
+* The **style** property is used to get as well as set the inline style of an element
+* While getting, it returns a CSSStyleDeclaration object that contains a list of all styles properties for that element with values assigned for the attributes that are defined in the element's inline style attribute
+* The style property has the same (and highest) priority in the CSS cascade as an inline style declaration set via the style attribute
+* As we get an object back we can set or get css properties
+* The CSS properties name will be in camelCase `cssPropertyName`
+* For example: `background-color` becomes: `backgroundColor`
+
+**Example:**
+* HTML
+  ```html
+    <p>This element doesn't have any styles</p>
+  ```
+
+* JS
+  ```js
+  let element = document.querySelector('p');
+
+  element.style; // we get an empty object ({}) back
+
+  element.style.color = 'red'; // As style is an object we can set properties, in this case we set the color to red
+
+  element.style.fontWeight = 'bold'; // using font-weight we can set the font to bold, as it's JavaScript the property name is fontWeight
+  ```
+
+* Using the style property and CSS property names written in JavaScript form we can style our components using JS
+
+#### Practice
+[Exercise 24](./exercises/browser/ex_24.md)
+
+### Element CRUD
+* CRUD means:
+  * Create
+  * Read
+  * Update
+  * Delete
+* This means that we can create, update & delete elements
+* The read action we can say it's when we select an element and get properties from it
+
+#### Creating elements
+* The document object has a **createElement** method that allows us to create new elements
+* `createElement` accepts a string as parameter with the HTML element name (a, div, span, li, ul, etc)
+
+**Example:**
+  ```js
+  var paragraph = document.createElement('p');
+  ```
+
+* In this example we call the createElement method and pass 'p' as parameter (tagName)
+* Then we assign the element reference to the paragraph variable
+* This element it's in memory and it doesn't have any content
+* So now we can use the paragraph variable to manipulate the new paragraph element like adding content, adding properties or even insert it into other elements
+
+* [MDN createElement doc](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement)
+
+#### Insert an element
+* The **appendChild** method adds a node to the end of the list of children of a specified parent node
+* This method will insert the new element as last child
+
+**Example:**
+* JS
+  ```js
+  const paragraph = document.createElement('p');
+  const div = document.createElement('div');
+
+  paragraph.innerText = 'Adding some text as content';
+
+  div.appendChild(paragraph);
+
+  document.body.appendChild(div);
+  ```
+
+* In this example we define 2 variables (paragraph & div) and assign one new element to each one (p & div)
+* Then we change the paragraph content and assign the text: Adding some text as content
+* Now that the paragraph has some content we append it to the div element
+* At the end we append the div into the document body
+* At the end our DOM looks like this:
+
+  ```html
+  <div>
+    <p>Adding some text as content</p>
+  </div>
+  ```
+
+* [MDN appendChild doc](https://developer.mozilla.org/es/docs/Web/API/Node/appendChild)
+* For example we can add some attributes and styles!
+
+**Example:**
+* JS
+  ```js
+  const paragraph = document.createElement('p');
+  const div = document.createElement('div');
+
+  paragraph.innerText = 'Adding some text as content';
+  paragraph.setAttribute('id', 'my-paragraph');
+
+  paragraph.style.fontWeight = 'bold';
+  paragraph.style.color = 'green';
+
+  div.border = '1px solid gray';
+
+  div.appendChild(paragraph);
+
+  document.body.appendChild(div);
+  ```
+
+* [MDN appendChild doc](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild)
+
+#### Practice
+[Exercise 25](./exercises/browser/ex_25.md)
+
+[Exercise 26](./exercises/browser/ex_26.md)
+
+[Exercise 27](./exercises/browser/ex_27.md)
+
+[Exercise 28](./exercises/browser/ex_28.md)
+
+#### Remove elements
+* The **removeChild** method removes a child node from the DOM
+* This method returns the removed node
+* Select the element before removing it
+
+**Example:**
+* HTML
+  ```html
+  <div>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+    <p>Third paragraph</p>
+  </div>
+  ```
+
+* JS
+  ```js
+  var div = document.querySelector('div');
+  var firstParagraph = div.children.item(0); 
+
+  div.removeChild(firstParagraph);
+  ```
+
+* In this example we select the div element
+* Then we get the first children
+* Once we have the child reference we remove it from the div using `div.removeChild(firstParagraph)`
+* In case we would like to delete all children at once we can set the innerHTML value to ''
+
+**Example:**
+* HTML
+  ```html
+  <div>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+    <p>Third paragraph</p>
+  </div>
+  ```
+
+* JS
+  ```js
+  var div = document.querySelector('div');
+
+  div.innerHTML = '';
+  ```
+
+* [MDN removeChild doc](https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild)
+
+#### Practice
+[Exercise 29](./exercises/browser/ex_29.md)
+
+[Exercise 30](./exercises/browser/ex_30.md)
+
+[Exercise 31](./exercises/browser/ex_31.md)
+
+#### Events
+* DOM Events are sent to notify code of interesting things that have taken place
+* Each event is represented by an object which is based on the Event interface, and may have additional custom fields and/or functions used to get additional information about what happened
+* Events can represent everything from basic user interactions to automated notifications of things happening in the rendering model
+* The browser will trigger events whenever something happens with the document or browser itself
+* For example we can know when the document is loaded, a button is clicked or a key is pressed
+* Events has the following structure:
+  * type
+  * target
+  * event handler
+  * event object
+* This are the 2 most common ways to handle events
+  * Assign a function to the element event property `on and name of the event` for example: element.onclick
+  * Using **addEventListener**
+
+**Example:**
+* HTML
+  ```html
+  <button>Click Me!!!</button>
+  ```
+
+* JS
+  ```js
+  const button = document.querySelector('button');
+
+  button.onclick = function() {
+    // Code that will be executed once button gets clicked
+    console.log('Oh, I been clicked');
+  }
+  ```
+
+* Also we could do something like:
+
+**Example:**
+* JS
+  ```js
+  const button = document.querySelector('button');
+  const handleClickEvent = function() {
+    console.log('Oh, I been clicked');
+  }
+
+  button.onclick = handleClickEvent;
+  ```
+
+* [MDN Events doc](https://developer.mozilla.org/en-US/docs/Web/Events)
+* [MDN onclick doc](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onclick)
+
+#### Practice
+[Exercise 32](./exercises/browser/ex_32.md)
+
+### Add Event Listener
+* We can also add event handlers using **addEventListener**
+* This method can be used in any object like window, document and other html elements
+* **addEventListener** accepts 2 parameters
+  * **event type:** it's a string with the event name ('click')
+  * **event handler:** it's a function that will work as callback
+
+**Example:**
+* HTML
+  ```html
+  <button>Click Me!!!</button>
+  ```
+
+* JS
+  ```js
+  const button = document.querySelector('button');
+
+  button.addEventListener('click', function() {
+    // code that will be executed once the button is clicked
+    console.log('Oh, I been clicked');
+  });
+  ```
+
+* In the event listener function we can use the reserved word **this** to reference the element that emited the event
+* In the previous example `this` will reference the button 
+
+  **Example:**
+  ```js
+  function clickHandler() {
+    console.log(this)		// this is the button that we clicked
+    this.style.backgroundColor = 'green';
+  }
+
+  function dblclickHandler() {
+    this.style.backgroundColor = 'red';
+  }
+
+  const button = document.querySelector('button');
+
+  button.addEventListener('click', clickHandler);
+
+  button.addEventListener('dblclick', dblclickHandler);
+  ```
+
+* In this example we can see how to add a double click event listener using the `dblclick` name
+* You can check more events on the [MDN addEventListener doc](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
+
+#### Practice
+[Exercise 33](./exercises/browser/ex_33.md)
+
+### Remove Event Listener
+* To remove an event listener we use the **removeEventListener** method
+* This method can also be used on window, document, and HTML elements
+* Also, this method accepts two parameters:
+  * **event type:** it's a string with the event name ('click')
+  * **event handler:** it's a function that will work as callback
+
+  **Example:**
+  ```js
+  function clickHandler() {
+    console.log(this);
+  }
+
+  let button = document.querySelector('button');
+
+  button.addEventListener('click', clickHandler);     // We add the click event listener 
+
+  button.removeEventListener('click', clickHandler);  // We remove the same event listener that we previously added
+  ```
+
+* Remember to always remove the event listener before removing your DOM elements
+* Otherwise you might have unexpected results and memory issues (if many elements)
+
+* [MDN removeEventListener doc](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)
+
+#### Practice
+[Exercise 34](./exercises/browser/ex_34.md)
+
+* As we learn events have different properties that we can use and some of them are:
+  * **Event.target:** A reference to the target to which the event was originally dispatched
+  * **Event.type:** The name of the event (case-insensitive)
+  * **Event.preventDefault()** Prevents default element behaviour
+
+* Using the event object we can know more about it and also prevent the event default action
+* For example links element have the default click event behaviour  set to navigate to the href url
+* We can prevent this from happening using the `preventDefault` method
+
+
+**Example:**
+* HTML
+  ```html
+  <a href="contact.html">Go to contact page</a>
+  ```
+
+* JS
+  ```js
+  let link = document.querySelector('a');
+  link.addEventListener('click', function(event) {
+    event.preventDefault();  // by calling preventDefault the event is not going to trigger the default behaivour
+    console.log('look someone clicked me');
+  });
+  ```
+
+* Using JavaScript we can handle mouse events like `click, dblclick, mouseover, mouseout & mousemove`
+* The event object has properties that help us know the mouse position like `clientX & clientY`
+
+  **Example:**
+  ```js
+  let body = document.querySelector('body');
+
+  body.addEventListener('click', function(event) {
+    console.log(event.clientX);
+    console.log(event.clientY);
+  });
+  ```
+
+#### Practice
+[Exercise 35](./exercises/browser/ex_35.md)
+
+[Exercise 36](./exercises/browser/ex_36.md)
+
+* With JavaScript we can handle keyboard events too like `keypress, keydown y keyup`
+* The event object that we get as parameter has a `charCode` property with a numeric value that represents the pressed key
+* Strings has a static method called fromCharCode (`String.fromCharCode`) that will accept a number value as parameter and returns the key value
+* Combining `charCode` and `String.fromCharCode` we can know the key that the user pressed
+
+  **Example:**
+  ```js
+    const body = document.querySelector('body');
+
+    body.addEventListener('keypress', function(event) {
+      const keyCode = event.charCode;
+      const key = String.fromCharCode(keyCode);
+      
+      console.log(key);
+    });
+  ```
+
+#### Practice
+[Exercise 37](./exercises/browser/ex_37.md)
+
+[Exercise 38](./exercises/browser/ex_38.md)
+
+#### List of Events you can use:
+* The browser API allow us to use many events handlers to create interactive UI's:
+  * onchange
+  * onclick / ondblclick / onmousedown / onmousedown
+  * onmouseover / onmouseout
+  * onkeydown / onkeypress / onkeyup
+  * onload
+  * onresize
+  * onscroll
+  * oninput
+  * onfocus / onblur
+
+#### Practice
+[Exercise 39](./exercises/browser/ex_39.md)
+
+[Exercise 40](./exercises/browser/ex_40.md)
+
+## Extra practice
+[Exercise 41](./exercises/browser/ex_41.md)
+
+[Exercise 42](./exercises/browser/ex_42.md)
+
+#### Forms
+* HTML Forms helps us retrieve user data
+* Using JavaScript we can handle inputs and forms events and values
+* Also, we can check the values that the user inputs
+* We need to select the form to be able to interact with
+
+  **Example:**
+  ```js
+  const form = document.querySelector('form');
+  ```
+
+* The `document` object has a `forms` property that returns all the document form elements
+
+  **Example:**
+  ```js
+    const firstForm = document.forms[0];
+    const documentForms = document.forms;
+  ```
+
+* The `form ` element have a `elements` property that returns the selected form elements collection
+
+  **Example:**
+  ```js
+  const form = document.querySelector('form');
+  const formElements = form.elements;
+
+  console.log(formElements)
+
+  // As it's a collection we can get the first element using 0 as index
+  const firstElement = form.elements[0];
+  ```
+
+* The form object has the following properties: `action`, `target`, `encoding` & `method`
+* As we know this are all HTML form attributes
+* Using JavaScript we can get or set this properties values
+* This is a good time to go check the HTML form section!
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login"></form>
+  ```
+
+* JS
+  ```js
+  const form = document.querySelector('form');
+
+  console.log(form.action); // save_user.html
+  console.log(form.encoding); // get
+  console.log(form.method); // application/x-www-form-urlencoded
+  console.log(form.name); // login
+  ```
+
+#### Practice
+[Exercise 43](./exercises/browser/ex_43.md)
+
+* The form elements have a `value` property that returns the element value
+* We can use this property on many form elements like:
+  * inputs of text, password, hidden
+  * checkbox
+  * radio
+  * textarea
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <input type="text" id="username" name="username" />
+    <input type="password" id="pass" name="pass" />
+    <input type="submit" name="submit" value="Send" />
+  </form>
+  ```
+
+* JS
+  ```js
+  const form = document.querySelector('form');
+  const username = form.elements[0].value;
+
+  username.value; // we get an empty string as it doesn't have a value
+  username.value = 'Pepe'; // We can also set an input value
+  ```
+
+#### Practice
+[Exercise 44](./exercises/browser/ex_44.md)
+
+* Forms emit a submit event
+* We can handle the form submit event using event handlers
+* When the form gets submitted it will send the input values to the action document
+* We can prevent the default form behaviour using the event preventDefault method
+* Other way to do this with forms is returning a false value
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <input type="text" id="username" name="username" />
+    <input type="password" id="pass" name="pass" />
+    <input type="submit" name="submit" value="Send" />
+  </form>
+  ```
+* JS
+  ```js
+  const form = document.querySelector('form');
+
+  form.onsubmit = function() {
+    // This code will get executed when the form is submited
+    // Returning false we don't execute the form submition
+    return false;
+  }
+
+  // also
+
+  const form = document.querySelector('form');
+
+  form.onsubmit = function(event) {
+    event.preventDefault();
+  }
+
+  // or
+
+  form.addEventHandler('submit', function(event) {
+    event.preventDefault();
+  });
+  ```
+
+#### Practice
+[Exercise 45](./exercises/browser/ex_45.md)
+
+* Select elements have a `selectedIndex` property that returns a number value for the selected option index
+* Also, this element has a `options` property that returns the options elements collection
+* We can get the selected option if we combine the select `selectedIndex` property and the `options` collection
+* Option elements also have a `value` property
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <select name="countries" id="countries">
+      <option value="ar">Argentina</option>
+      <option value="br">Brazil</option>
+      <option value="ca">Canada</option>
+      <option value="cl">Chile</option>
+    </select>
+  </form>
+  ```
+
+* JS
+  ```js
+  const select = document.querySelector('select');
+  const index = select.selectedIndex;
+
+  console.log(index);  // returns the option index
+  console.log(select.options);  // returns the option collection
+
+  Select.options[index]; // 
+  console.log(select.options[index].value); // returns the selected option value
+  ```
+
+#### Practice
+[Exercise 46](./exercises/browser/ex_46.md)
+
+* `checkbox` elements also have a `value` property
+* Also, they have a `checked` property that returns a boolean value in case the checkbox is checked or not (true or false)
+* Set the `checked` to true if you want to check it and false to uncheck it
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <input type="checkbox" name="sex" value="f" checked> Female
+    <input type="checkbox" name="sex" value="m"> Male
+  </form>
+  ```
+
+* JS
+  ```js
+  const checkboxes = document.querySelector('checkbox');
+  const female = checkboxes[0];
+  const male = checkboxes[1];
+
+  console.log(female.checked);  // returns true as the element has the checked attribute
+  female.checked = false; // Set's the checkbox checked property to false
+  console.log(female.value); // returns f as it's the element value
+
+  male.checked;  // returns false as the element is not checked
+  male.checked = true; // Set checked to true
+  console.log(male.value); // returns m as it's the element value
+  ```
+
+* To get the checked elements we can combine JavaScript and CSS selector using `:checked`
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <input type="checkbox" name="sex" value="f" checked> Female
+    <input type="checkbox" name="sex" value="m"> Male
+  </form>
+  ```
+* JS
+  ```js
+  const selectedGenderElement = document.querySelector('input:checked');
+
+  console.log(selectedGenderElement.checked);  // Returns true as it's the checked element
+  selectedGenderElement.checked = false; // We uncheck this element
+  console.log(selectedGenderElement.value); // returns f as it's the element value
+  ```
+
+#### Practice
+[Exercise 47](./exercises/browser/ex_47.md)
+
+* Form element can handle events using `onfocus, onblur, onchange & oninput` properties
+* Also, you can use this events as event handler using `addEventListener`
+  * **focus:** This event is triggered when we set focus on an item (example: clicking on it to write)
+  * **blur:** This event is triggered when the element loose focus
+  * **change:** This event is triggered when the selected value of an select element changes
+  * **input:** This event is triggered when we type in an input
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <input type="text" id="username" name="username" />
+    <input type="password" id="pass" name="pass" />
+    <input type="submit" name="submit" value="Submit" />
+  </form>
+  ```
+
+* JS
+  ```js
+  const form = document.querySelector('form');
+  const username = form.elements[0];
+
+  username.onfocus = function() {
+    // this code will get executed when we set focus on the username input
+    console.log('Username element focus');
+  }
+
+  username.onblur = function() {
+    // this code will get executed when we remove username focus
+    console.log('Username element lost focus');
+  }
+
+  username.oninput = function() {
+    // this code will get executed when we input some value in the input
+    console.log('The user is typing!');
+  }
+  ```
+
+* Handling the `change` event we can handle a select element change
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <select name="countries" id="countries">
+      <option value="ar">Argentina</option>
+      <option value="br">Brazil</option>
+      <option value="cl">Chile</option>
+    </select>
+  </form>
+  ```
+
+* JS
+  ```js
+  const select = document.querySelector('select');
+
+  select.onchange = function() { 
+    // This code gets executed when the user changes the select selected item
+    const index = select.selectedIndex;
+    const value = select.options[index].value;
+
+    console.log(index);
+    console.log(value);
+  }
+  ```
+
+#### Practice
+[Exercise 48](./exercises/browser/ex_48.md)
+
+* To validate if an input is empty we can combine the `length` and `value` properties
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <input type="text" id="username" name="username" />
+    <input type="password" id="pass" name="pass" />
+    <input type="submit" name="submit" value="Send" />
+  </form>
+  ```
+
+* JS
+  ```js
+  const form = document.querySelector('form');
+
+  form.onsubmit = function(evento) {
+    evento.preventDefault();
+    const username = form.elements[0];
+
+    // with the value property we get the input value
+    // Then we use the length property to check if the input is empty or not
+    // We could add trim before to remove empty spaces too
+    if (username.value.length === 0) {
+      console.log('Wrong username');
+      return false;
+    }
+
+    return true;
+  }
+  ```
+
+#### Practice
+[Exercise 49](./exercises/browser/ex_49.md)
+
+# Regex
+* JavaScript can use Regex as values too
+* Regex allow us to search for a strings pattern
+* Also, we can use it to validate our inputs too
+* Regexs have a `test()` method that will test if the pattern match the content or not
+* For example the regex: `/^[a-z0-9]+$/i` will be true if the text only contains alphanumeric characters
+
+**Example:**
+* HTML
+  ```html
+  <form action="save_user.html" method="get" enctype="application/x-www-form-urlencoded" name="login">
+    <input type="text" id="username" name="username" />
+    <input type="text" id="mail" name="mail" />
+    <input type="password" id="pass" name="pass" />
+    <input type="submit" name="submit" value="Send" />
+  </form>
+  ```
+* JS
+  ```js
+  const form = document.querySelector('form');
+
+  const validateUser = function(username) {
+    // we check if the username value (string) has alphabumeric characters only
+    const regex = /^[a-z0-9]+$/i;
+    
+    return regex.test(username);
+  }
+
+  const validateEmail = function(email) {
+    // this is a simple email validation regex
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    
+    // this text method will return a true/false value depending if the string matches the regex or not
+    return emailRegex.test(email);
+  }
+
+  form.onsubmit = function(event) {
+    event.preventDefault();
+    
+    const username = form.elements[0];
+    const email = form.elements[1];
+
+    if (!validateUser(username.value)) {
+      console.log('Incorrect username');
+      return false;
+    }
+
+    if (!validateEmail(mail.value)) {
+      console.log('Incorrect Email');
+      return false;
+    }
+
+    // At this point we can say that the form is valid as the username and email both match the expected regex
+
+    return true;
+  }
+  ```
+
+* You can learn more about regex and how they work in the following [link (regexone)](https://regexone.com)
+* Also, you can look for common regex on the following [site(regexlib)](http://www.regexlib.com)
+
+#### Practice
+[Exercise 50](./exercises/browser/ex_50.md)
+
+## JSON
+* JSON means **JavaScript Object Notation** and it's a lightweight data-interchange format
+* Is easy to read and write
+* JSON structure is very similar to JavaScript literal objects but with some minors differences
+* The JSON object properties name use double quotes
+* Check out the [json.org doc](https://www.json.org) to learn more about JSON
+
+  **Example:**
+  ```js
+  const JSONexample = { 
+    "attribute": "valor", 
+    "attribute1": 1, 
+    "attribute2": [], 
+    "attribute3": null, 
+    "attribute4": false
+  };
+  ```
+
+* JavaScript has a JSON object that has two important methods `stringify()` & `parse()` that will help us interact with JSON
+  * **stringify:** this method converts a JavaScript value to a JSON string
+  * **parse:** this method parses a JSON string
+* Using this two methods we can convert from JSON to JavaScript and the other way around
+
+  **Example:**
+  ```js
+  // Stringify example with a JavaScript object to a JSON one
+
+  const user = {
+    username: 'pepe',
+    password: '12345',
+    email: 'pepe@gmail.com',
+    married: true,
+    childrens: ['maria', 'juan']
+  }
+
+  const JSONuser = JSON.stringify(user); // returns a JSON object with the user representation
+
+  console.log(JSONuser);
+  /*
+    {
+      "username":"pepe",
+      "password":"12345",
+      "email":"pepe@gmail.com",
+      "married":true,
+      "childrens":["maria","juan"]
+    }
+  */
+
+  // Parse example
+
+  const JSONuser = JSON.parse(JSONuser); // Returns a JavaScript objectretorna un objeto de ECMAScript
+
+  console.log(JSONuser);
+
+  /*
+    {
+      username: "pepe", 
+      password: "12345", 
+      email: "pepe@gmail.com", 
+      married: true, 
+      childrens: ["maria", "juan"]
+    }
+  */
+  ```
+
+* In this example we see how easy it's to transform from JSON and JavaScript objects
+* We'll use JSON objects to communicate with the server and also when using other API's (twitter, etc)
+* [MDN JSON parse doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
+* [MDN JSON stringify doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
+* [Youtube - JSON Crash Course](https://www.youtube.com/watch?v=wI1CWzNtE-M)
+
+#### Practice
+[Exercise 51](./exercises/browser/ex_51.md)
+
+## AJAX
+* **AJAX** stands for `Asynchronous JavaScript And XML`
+* It used to use the XMLHttpRequest object to communicate with servers
+* It can send and receive information in various formats, including JSON, XML, HTML, and text files
+* AJAX’s most appealing characteristic is its `asynchronous` nature, which means it can communicate with the server, exchange data, and update the page without having to refresh the page
+* The two major features of AJAX allow you to do the following:
+  * Make requests to the server without reloading the page
+  * Receive and work with data from the server
+* As XMLHttpRequest is kind of complex to use and given that we no longer use XML that much we can instead use `fetch` and get the same features
+
+* [MDN AJAX doc](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX)
+* [MDN XMLHttpRequest doc](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+* [JSON and AJAX Tutorial: With Real Examples](https://www.youtube.com/watch?v=rJesac0_Ftw)
+* [Youtube - AJAX Definition - Intro to AJAX](https://www.youtube.com/watch?v=rJesac0_Ftw)
+* [Youtube - REST API concepts and examples](https://www.youtube.com/watch?v=7YcW25PHnAA)
+
+### Fetch
+* Open the following link and take a look at the JSON object that we get back from the API
+* [https://api.tvmaze.com/search/shows?q=batman](https://api.tvmaze.com/search/shows?q=batman)
+
+  ![JSON](./resources/images/browser/json.png)
+
+* As you can see we can get JSON back from a server but it might be difficult to read this way
+* Open the following url: [https://codebeautify.org/jsonviewer](https://codebeautify.org/jsonviewer)
+
+* Click the load url button and enter the https://api.tvmaze.com/search/shows?q=batman url
+* This site will help us see the response that we get from the server on the left side
+* We can see the JSON object representation in a way that is more readable
+
+  ![JSON](./resources/images/browser/json2.png)
+
+* Now that we know what we want to retrieve from the API call we can learn how to get it using JavaScript
+* The **Fetch** API provides an interface for fetching resources (including across the network)
+* It will seem familiar to anyone who has used XMLHttpRequest, but the new API provides a more powerful and flexible feature set
+* Fetch provides a generic definition of Request and Response objects
+* The **fetch** method takes one mandatory argument, the path to the resource you want to fetch
+
+  **Example:**
+  ```js
+  const apiURL = 'https://api.tvmaze.com/search/shows?q=batman';
+
+  fetch(apiURL);
+  ```
+
+* In this example we are using TV Maze public api to retrieve some batman tv data
+* The `fetch` method returns a `Promise` that resolves to the Response to that request, whether it is successful or not
+* As the response it's a promise we can use the `then` method
+* The `then` method accepts a callback function as parameter
+
+  **Example:**
+  ```js
+  const apiURL = 'https://api.tvmaze.com/search/shows?q=batman';
+
+  fetch(apiURL)
+    .then(function(response) {
+      console.log(response); // we get a Response object back with the TV data
+    });
+  ```
+
+* The Response object looks like this
+  ![API Response](./resources/images/js-browser/api_response.png)
+
+* The Response object has a `json` method that returns a promise that resolves with the result of parsing the body text as JSON
+
+  **Example:**
+  ```js
+  const apiURL = 'https://api.tvmaze.com/search/shows?q=batman';
+
+  fetch(apiURL)
+    .then(function(response) {
+      return response.json();
+    });
+  ```
+
+* Promises can be chained using the `then` method as we return values
+
+  **Example:**
+  ```js
+  const apiURL = 'https://api.tvmaze.com/search/shows?q=batman';
+
+  fetch(apiURL)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      console.log(data);
+    });
+  ```
+
+  ![data](./resources/images/browser/response.png)
+
+* Each episode JSON has the following structure:
+
+  ```json
+  {
+    "score": 23.0327,
+    "show": {
+      "id": 975,
+      "url": "http://www.tvmaze.com/shows/975/batman",
+      "name": "Batman",
+      "type": "Scripted",
+      "language": "English",
+      "genres": [
+        "Comedy",
+        "Action",
+        "Science-Fiction"
+      ],
+      "status": "Ended",
+      "runtime": 30,
+      "premiered": "1966-01-12",
+      "officialSite": null,
+      "schedule": {
+        "time": "19:30",
+        "days": [
+          "Thursday"
+        ]
+      },
+      "rating": {
+        "average": 8.2
+      },
+      "weight": 86,
+      "network": {
+        "id": 3,
+        "name": "ABC",
+        "country": {
+          "name": "United States",
+          "code": "US",
+          "timezone": "America/New_York"
+        }
+      },
+      "webChannel": null,
+      "externals": {
+        "tvrage": 2719,
+        "thetvdb": 77871,
+        "imdb": "tt0059968"
+      },
+      "image": {
+        "medium": "http://static.tvmaze.com/uploads/images/medium_portrait/6/16463.jpg",
+        "original": "http://static.tvmaze.com/uploads/images/original_untouched/6/16463.jpg"
+      },
+      "summary": "<p>Wealthy entrepreneur Bruce Wayne and his ward Dick Grayson lead a double life: they are actually crime fighting duo Batman and Robin. A secret Batpole in the Wayne mansion leads to the Batcave, where Police Commissioner Gordon often calls with the latest emergency threatening Gotham City. Racing to the scene of the crime in the Batmobile, Batman and Robin must (with the help of their trusty Bat-utility-belt) thwart the efforts of a variety of master criminals, including Catwoman, Egghead, The Joker, King Tut, The Penguin, and The Riddler.</p>",
+      "updated": 1523760926,
+      "_links": {
+        "self": {
+          "href": "http://api.tvmaze.com/shows/975"
+        },
+        "previousepisode": {
+          "href": "http://api.tvmaze.com/episodes/95649"
+        }
+      }
+    }
+  }
+  ```
+
+* Now that we have the data and know the JSON structure we can use it:
+
+  **Example:**
+  ```js
+  const apiURL = 'https://api.tvmaze.com/search/shows?q=batman';
+
+  fetch(apiURL)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      const show = data[0];
+
+      console.log(show.show.name); // Batman
+      console.log(show.show.premiered); // 1966-01-12
+      console.log(show.show.image.original); // http://static.tvmaze.com/uploads/images/original_untouched/6/16463.jpg
+    });
+  ```
+
+* Now we can use everything that we learned on [this fetch example](https://github.com/nisnardi/fetch-demo)
+
+#### Practice
+[Exercise 52](./exercises/browser/ex_52.md)
+
+## Congrats!!!
+* Browser will fight to parse and interpret you JavaScript code
+
+  ![Browsers](./resources/images/browser/browserfight.jpg)
+
+* You Rock! 🤘🏻
+
+  ![Congrats](https://media.giphy.com/media/RPwrO4b46mOdy/giphy.gif)
+
+* Now you know JavaScript Browser side, we no longer need a droid! Thanks C-3PO 🤖
+
+  ![Java](./resources/images/browser/java.webp)
+
+## Assets / Resources
+* [Wes Bos - 30 Day Vanilla JS Coding Challenge (Great practice)](https://javascript30.com)
+* [Frontendmasters - front-end handbook](https://frontendmasters.com/books/front-end-handbook/2018/)
+* [Superhero.js](http://superherojs.com)
+
+## Let's Checkout Node.js
+* [<- JavaScript](javascript.md) - [Node.js ->](nodejs.md)
 
