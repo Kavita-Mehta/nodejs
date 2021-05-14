@@ -580,3 +580,447 @@
 [Exercise 4](./exercises/node/ex_4.md)
 
 [Exercise 5](./exercises/node/ex_5.md)
+## Arrow Functions
+* Node.js uses arrow functions for its callbacks and you can see many examples in their documentation
+* Arrow functions are just JavaScript functions that we write in a different way
+* We won't use the function reserved word
+* Arrow function definition
+  ```js
+  // Regular function
+  function() {}
+
+  // Arrow function
+  () => {}
+  ```
+
+* We can assign them to variables in the same way that we used to
+
+  ```js
+  const myFunction = function() {
+    console.log('my function call');
+  }
+
+  const myES6Function = () => {
+    console.log('my function');
+  }
+  ```
+
+* Then we can call them in the same way we used to:
+
+  ```js
+  const myFunction = function() {
+    console.log('my function call');
+  }
+
+  const myES6Function = () => {
+    console.log('my function');
+  }
+
+  myFunction();
+  myES6Function();
+  ```
+
+* In this example we see how similar functions and arrow functions are
+* Arrow functions are part of the ES6 definition and they are simple to write
+* We can [almost use them on any Browser](https://caniuse.com/#search=arrow%20functions) too
+
+  ```js
+  const myFunction = function(parameter) {
+    console.log('parameter: ', parameter);
+  }
+
+  const myES6Function = (parameter) => {
+    console.log('parameter: ', parameter);
+  }
+  ```
+
+* Passing parameters works the same way too
+* The only difference is that if we only pass one parameter we can remove the parentheses
+
+  ```js
+  const myFunction = function(parameter) {
+    console.log('parameter: ', parameter);
+  }
+
+  const myES6Function = parameter => {
+    console.log('parameter: ', parameter);
+  }
+  ```
+
+* They are really usefull when we use them as callbacks:
+
+  ```js
+  const students = ['tom', 'peter', 'maria', 'claire'];
+
+  students.forEach(function(student) {
+    console.log(student);
+  });
+
+  students.forEach(student => {
+    console.log(student);
+  });
+  ```
+
+* In both cases the functions are working as callbacks but arrow functions looks much simpler
+* Arrow functions change the way that we can return values from it
+* Using arrow functions will return the value after the => symbol
+
+  ```js
+  function getMessage() {
+    return 'hi, this is a message';
+  }
+
+  const getMessageArrowFunction = () => 'hi, this is a message';
+  const message = getMessageArrowFunction();
+  ```
+
+* As `{ }` in arrow functions are used to limit the function body we need to find a different way in case we need them to return an object
+* We can use parentheses and curly brackets 
+
+  ```js
+  function getUser() {
+    const user = {
+      name: 'Maria',
+      age: 26
+    };
+    
+    return user;
+  }
+
+  const getUserArrowFunction = () => ({
+    name: 'Maria',
+    age: 26
+  });
+
+  const user = getUserArrowFunction();
+  console.log(user.name);
+  ```
+
+* Arrow functions do not have their own this value
+* This means that the `this` inside the function it's going to work in a different way
+* Lexical Scoping just means that it uses this from the code that contains the Arrow Function
+* You can see [great examples](https://hackernoon.com/javascript-es6-arrow-functions-and-lexical-this-f2a3e2a5e8c4)
+* Read the [MDN Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) doc to learn more about Arrow Functions
+* [ES6 in depth arrow functions](https://hacks.mozilla.org/2015/06/es6-in-depth-arrow-functions/)
+* [The Coding Train - ES6 Arrow Function - YouTube](https://www.youtube.com/watch?v=mrYMzpbFz18)
+
+#### Practice
+[Exercise 6](./exercises/node/ex_6.md)
+
+[Exercise 7](./exercises/node/ex_7.md)
+
+## Web Server
+* Node.js has a build in [HTTP](https://nodejs.org/dist/latest-v8.x/docs/api/http.html) module
+* Using the HTTP module we can create a Node.js Web Server
+* This web server will listen for `HTTP requests` and send `HTTP responses`
+* Require the http module to start coding our server
+* We don't have to run npm install as we're using a build in Node.js module
+* Create a new server.js file and add the following code
+
+  **server.js**
+  ```js
+  const http = require('http');
+  const port = 3000;
+  ```
+
+* We defined an http variable and assigned what http node module exported
+* Also we declared a port variable as we're going to need it to set up our server
+* This means that our server will be listening at port 3000
+* So now we need to create a server and we can do that using the `createServer` method
+* This method accepts a callback function as parameter
+* The callback function gets `2 parameters` that represents `request & response`
+* This means that the callback function it's going to be executed on each request and we can handle the response
+
+  ```js
+  const requestHandler = (request, response) => {  
+    response.end('Hello Node.js Server!');
+  }
+
+  const server = http.createServer(requestHandler);
+  ```
+
+* We'll use the requestHandler function as createServer callback
+* This means that requestHandler recibes a request and response object that represents the http request & response
+* requestHandler will be executed on each HTTP request
+* When we get a request we need to send a response back
+* In this example we're sending just a text with `'Hello Node.js Server!'` content
+* So far we haven't told the server on which port it should listen to
+* We can configure it using `server.listen`
+* This method accepts the port number as first parameter
+* And a callback function as second parameter
+* This function will get executed when the server start listening
+* The callback function gets an error parameter that we can use to check if there's an error
+
+  ```js
+  server.listen(port, (err) => {  
+    if (err) {
+      return console.log('something bad happened', err)
+    }
+
+    console.log(`server is listening on ${port}`)
+  })
+  ```
+
+* Now we have all the code together
+
+  ```js
+  const http = require('http')  
+  const port = 3000
+
+  const requestHandler = (request, response) => {  
+    console.log(request.url)
+    response.end('Hello Node.js Server!')
+  }
+
+  const server = http.createServer(requestHandler)
+
+  server.listen(port, (err) => {  
+    if (err) {
+      return console.log('something bad happened', err)
+    }
+
+    console.log(`server is listening on ${port}`)
+  })
+  ```
+
+* Copy and paste this code into the server.js file
+* Run the following command
+
+  ```bash
+  node server.js
+  ```
+
+* If everything goes well you will see the following message as output
+
+  ```bash
+  server is listening on 3000
+  ```
+
+* Also, you can configure `npm start` 
+
+  ```json
+  "start": "node server.js"
+  ```
+
+* Now we have a Node.js web server running
+* Open the browser and input localhost:3000 as url
+* We get a `Hello Node.js Server!` back
+* As we can see we're using the configured 3000 port
+* The server will stop if we cut the Node.js script executing
+* After doing it we won't get a response back from the server
+* The HTTP module provides the basic features to have an HTTP server
+* To create a real application we need more abstraction so we can handle more complexity
+* This is the reason why we have many other modules that uses the basic HTTP adding more features and abstraction
+* Some the of the most common web server modules are:
+  * [Express](http://expressjs.com/)
+  * [Hapi](http://hapijs.com/) 
+  * [Koa](http://koajs.com/)
+  * [Restify](http://restify.com/)
+* In this course we'll use `Express.js`
+
+#### Practice
+[Exercise 8](./exercises/node/ex_8.md)
+
+## Express
+* Using express we'll be able to execute the following tasks:
+  * Handle any HTTP request (GET, POST, etc)
+  * Create and handle specific routes
+  * Configure templating engines to create dynamic HTML
+  * Configure and use express `middlewares` to add more features
+  * Configure our server the way we want
+  * And much, much more!
+* Express is a minimal and flexible Node.js web application framework
+* This is why we'll add many modules to configure our server like sessions, coockies and more
+* Some known modules are maintained by the [express core team](http://expressjs.com/en/resources/middleware.html)
+* There's no silver bullets on how to create/configure an Express server
+
+### Create a web server using Express
+* We already saw how we can create and start a Node web server using the HTTP module
+* Now we need to learn how to do it using express
+* The basic features are going to be the same:
+  * Request the module
+  * Configure the server
+  * Handle request
+  * Send response
+* The request object allow us to get a lot of data from the user like username & password, product id or search query
+* Using these values we can define what we should do, be it: interact with a database, create a session or just send some asset
+* We can configure express to respond with static content like we have been doing using HTTP-Server module
+* Also we can create dynamic content
+* We might do it using a database or not
+* To create dynamic content we'll use JavaScript and a template engine
+* So, Express allows us to handle http routes for each request and configure the corresponding response
+* Configure static assets
+* Configure template engine
+* And for any other task we can add many different modules that will help us work better
+* To have express working we need to first install it
+
+  ```bash
+  npm i express
+  ```
+
+* Now lets create a basic server by doing a Hello Node.js World example
+
+  **Example:**
+  ```js
+  // require the express module
+  const express = require('express');
+
+  // then create a express server
+  const app = express();
+
+  // configure the default route and send a text as response
+  app.get('/', function(request, response) {
+    response.send('Hello Node.js World!');
+  });
+
+  // configure the port that express is going to listen to
+  app.listen(3000, function() {
+    console.log('Example app listening on port 3000!');
+  });
+  ```
+
+* In this example we see how to create a simple Express server
+* We need to require the express module and create a express app/server
+* Then we configure a GET default route `/`
+* Using the listen method we tell express on which port it will listen to HTTP requests and show a message when the server starts
+* Now that we have our server running we can visit `localhost:3000` using a browser to get the response back from the server
+
+#### Practice
+[Exercise 9](./exercises/node/ex_9.md)
+
+### Using GET routes
+* As you can see creating routes with express is really easy
+* We use the `get` method to obtain `GET` requests
+* This method accepts a string as first parameter that represents the route that we want to handle
+* For example we used `/` to handle our root route
+* The second parameter is a callback function that accepts 2 objects (`request & response`) as parameters
+* The response object has a `send` method that we can use to send some data to the client as response
+* Thats why we can see the message back when we send a request to our server
+
+  **Example:**
+  ```js
+  app.get('/', function(request, response) {
+    response.send('Hello World!');
+  });
+  ```
+
+* The express object has many methods to handle HTTP requests using different HTTP methods
+
+  **Example:**
+  ```js
+  app.post('/', function(req, res) {
+    res.send('Request using POST');
+  });
+
+  app.put('/', function(req, res) {
+    res.send('Request using PUT');
+  });
+
+  app.delete('/', function(req, res) {
+    res.send('Request using DELETE');
+  });
+  ```
+
+* Also we can use an `all` method to handle any type of HTTP method
+* We can use this `all` method to configure `middleware` features for all our calls
+
+  **Example:**
+  ```js
+  app.all('/', function(req, res) {
+    res.send('Request using GET, POST, PUT or DELETE');
+  });
+  ```
+
+* Now that we know how express routes work we can create some to handle a products routes
+
+  **Example:**
+  ```js
+  app.get('/products', function(req, res) {
+    res.send('On this call we show a list of products');
+  });
+
+  app.post('/product/:id', function(req, res) {
+    res.send('On this call we create a product');
+  });
+
+  app.put('/product/:id', function(req, res) {
+    res.send('On this call we update a product');
+  });
+
+  app.delete('/product/:id', function(req, res) {
+    res.send('On this call we delete a product');
+  });
+  ```
+
+* Using the browser we can only use GET requests
+* To use POST we need to create a form and set the method to POST
+* This is why we have a tool called [Postman](https://www.getpostman.com/) (you can find more like this one) that will help us request using different HTTP methods
+* Install and open Postman
+* Configure the URL that we want to use (request)
+* We use the send button to create a request to the given URL using the selected HTTP method
+* Then we can see the server response on the Postman lowers section of the screen
+
+  ![Postman](./resources/images/node/postman.png)
+
+* Using Postman we can know the response status (in this example it's 200)
+* We can also change the request and response HTTP headers
+* And configure different HTTP methods (POST, PUT, DELETE, etc)s
+
+  ![Postman](./resources/images/node/postman2.png)
+
+#### Practice
+[Exercise 10](./exercises/node/ex_10.md)
+
+### Response handling
+* Using the `response` object we can send the response to the client and choose different formats
+* We can send JSON format if we're creating an API with the corresponding JSON headers
+* Also, we can send an HTML (static or dynamic) content as string too
+* You can read about all the response types that Express can handle on [express doc](https://expressjs.com/en/guide/routing.html#response-methods)
+
+**JSON**
+* The response `json` method allows us to send the user some data in JSON format
+* We can pass a JavaScript object as parameter and the json method will transform it to JSON for us
+* It will also add the `Content-Type application/json` header
+
+  **Example:**
+  ```js
+  app.get('/', function(request, response) {
+    response.json({ name: 'Marta', age: '40'});
+  });
+  ```
+
+* Then when we call this route we get: {"name":"Marta","age":"40"} back
+* Also, we get the right headers too
+
+  ![JSON Header](./resources/images/node/json-header.png)
+
+**sendFile**
+* Using the response `sendFile` method we can send a a file back
+* We can send any type of file and it will depend on the client if it knows how to read or interpretate this response
+* If we send html, images, audio, video, js or css and the client is a browser it will be able to handle this response
+
+  **Example:**
+  ```js
+  const express = require('express');
+  const app = express();
+  const path = require('path');
+
+  app.get('/', function(request, response) {
+    response.sendFile(path.join(__dirname, 'index.html'));
+  });
+
+  app.listen(3000, function() {
+    console.log('Example app listening on port 3000!');
+  });
+  ```
+
+* In this example we're using the `path module` to join Node.js special `__dirname` variable and the file name (index.html) that we want to send
+* Path module has a join method that allows us to join this two values
+* Node.js [__dirname](https://nodejs.org/docs/latest/api/modules.html#modules_dirname) will return the current directory
+* By joining the current direname and the file name we're creating an absolute path so sendFile knows exactly where it needs to get the file from
+
+#### Practice
+[Exercise 11](./exercises/node/ex_11.md)
+
+[Exercise 12](./exercises/node/ex_12.md)
+
