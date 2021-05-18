@@ -1023,4 +1023,480 @@
 [Exercise 11](./exercises/node/ex_11.md)
 
 [Exercise 12](./exercises/node/ex_12.md)
+### Express Router
+* As we saw on the products route example we can have many routes for one resource and our server file can grow
+* To handle this routing config better we can use `express router`
+* We'll be grouping our routes by action or resource type
+* It's easier to read and maitain our server routes this way
+
+**Example:**
+* home.js
+
+  ```js
+  // Create the express router to handle our home requests
+  var express = require('express');
+  var router = express.Router();
+
+  router.get('/', function(req, res) {
+    res.send('Welcome to our Site!');
+  });
+
+  module.exports = router;
+  ```
+
+* products.js
+  ```js
+  // Create the express router to handle our products requests
+  var express = require('express');
+  var router = express.Router();
+
+  router.get('/', function(req, res) {
+    res.send('On this call we show a list of products');
+  });
+
+  router.post('/:id', function(req, res) {
+    res.send('On this call we create a product');
+  });
+
+  router.put('/:id', function(req, res) {
+    res.send('On this call we update a product');
+  });
+
+  router.delete('/:id', function(req, res) {
+    res.send('On this call we delete a product');
+  });
+
+  module.exports = router;
+  ```
+
+* index.js
+
+  **Mount the routes**
+  ```js
+  const express = require('express');
+  const app = express();
+
+  // Routers
+  const home = require('./home.js');
+  const products = require('./products.js');
+
+  app.use('/', home);
+  app.use('/products', products);
+  ```
+
+* In this example we see how we can have multiple routers using the express `Router` module
+* Each router that we create can be mounted on the express app and configure the url that it need to handle
+* Use express.Router() to create a new router
+* `router.get / router.post` will handle the get and post HTTP methods
+* Then using `app.use` we tell express to use this routes handlers
+* We call this process `router mounting`
+
+#### Practice
+[Exercise 13](./exercises/node/ex_13.md)
+
+### Status and error handling
+* The response object has a `status` method that allows us to set the HTTP status response codes
+* By default is 200
+* It accepts a number as parameter
+* We can also chain this method with others like send
+
+  **Example:**
+  ```js
+  app.get('/', function(request, response) {
+    res.status(200).json({ firsname: 'Pepe', lastname: 'Martin'});
+  });
+
+  app.get('/error', function(request, response) {
+    res.status(500).send('Server error');
+  });
+  ```
+
+* In the first example we set 200 as status code and send a JavaScript object as JSON as response
+* On the error call we want to send an error status back so we set 500 to let the user know that there's a server error
+* Also, we can handle 404 routes the following way:
+
+  **Example:**
+  ```js
+  app.use(function (req, res, next) {
+    res.status(404).send("Sorry can't find that!")
+  })
+  ```
+
+* In this example we don't specify the route that we want to handle
+* If the request doesn't match any of the other routes it will execute this one at last
+* As it didn't found the route we can send a 404 as there's no document to send
+* We could send a file back too with a [cool 404 message](https://www.creativebloq.com/web-design/best-404-pages-812505)
+* Express also allows us to handle errors
+* It's going to be similar to 404
+* We need to add one more parameter that's the error one
+* The callback function now will have the following parameter: `error, request, response and next`
+* If we get an error message we can send it to as response
+* This functions that we pass as parameters are called middleware
+* The next parameter allows us to call the next express middleware (we'll talk more about it on the next section)
+
+  **Example:**
+  ```js
+  app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+  })
+  ```
+
+#### Practice
+[Exercise 14](./exercises/node/ex_14.md)
+
+### Middleware
+* A **Middleware** is a function that has access to the request & response objects
+* We can chain middleware calls using the `next` function in the application’s request-response cycle
+* The `next` function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware
+* So this means that the middleware gets three parameters: `request, response and a function callback called next`
+* Express has many middlewares that we can install, configure and use
+
+  **Example:**
+  ```js
+  const express = require('express');
+  const app = express();
+
+  const myMiddleware = function(req, res, next) {
+    // We set a new property in the request object
+    req.someValue = 'This is a value to test the Middleware';
+    
+    // We call the next middleware
+    next();
+  }
+
+  app.listen(3000);
+  ```
+
+* To use a middleware we use the express `use` method
+* This method accepts the function callback as parameter that will get executed on each request
+
+  **Example:**
+  ```js
+  const express = require('express');
+  const app = express();
+
+  const myMiddleware = function(req, res, next) {
+    req.someValue = 'This is a value to test the Middleware';
+    
+    next();
+  }
+
+  app.use(myMiddleware); // Add a middleware
+
+  app.listen(3000);
+  ```
+
+* Now we can define a new route
+
+  **Example:**
+  ```js
+  const express = require('express');
+  const app = express();
+
+  const myMiddleware = function(req, res, next) {
+    req.someValue = 'This is a value to test the Middleware';
+    
+    next();
+  }
+
+  app.use(myMiddleware);
+
+  app.get('/', (req, res) => {
+    const responseMessage = req.someValue; // We get the request value that we setted from the middleware
+    
+    res.send(responseMessage);
+  });
+
+  app.listen(3000);
+  ```
+
+* So, a middleware is just a function that will get executed on each request
+* The callback function will accept three parameters:
+  * req: `request` object
+  * res: `response` object
+  * next: it's a function to call the following middleware
+* To call the next middleware we need to call `next()` function 
+* Using the express app and the `use` method we can configure express to use middlewares
+* For example we can use other modules like [morgan](https://github.com/expressjs/morgan):
+
+  **Example:**
+  ```js
+  const express = require('express');
+  const logger = require('morgan');
+  const app = express();
+
+  app.use(logger('dev'));
+  ```
+
+* In this case we imported `morgan` and configured it as a middleware
+* We can use morgan as our server logger
+* Learn about morgan and how to use it reading the module doc
+* Using other express middleware is really simple
+* [Express Middlewares](http://expressjs.com/en/resources/middleware.html)
+* Learn more about [Express middleware reading the docs](https://expressjs.com/guide/writing-middleware.html)
+
+#### Practice
+[Exercise 15](./exercises/node/ex_15.md)
+
+### Static Content
+* So far we created routes to handle our requests
+* Many times we just need to return a file like index.html, styles.css or scripts.js
+* All this files doesn't change on the server as they're all static assets
+* We can configure express to serve statics files from a folder
+* By convention we call this folder public
+* Express has a `static` method that accepts one string parameter
+* This parameter represents the static folder name
+* As this method returns a function we can use it as a middleware
+* We use express `use` method to configure a middleware
+
+  **Example:**
+  ```js
+  const express = require('express');
+  const app = express();
+
+  app.use(express.static('public'));
+  ```
+
+* In this example we set a public folder to serve our static assets
+* So for example we can call the express server and request for files like index.html, styles.css or scripts.js
+  * http://localhost:3000/img/logo.png
+  * http://localhost:3000/js/script.js
+  * http://localhost:3000/css/styles.css
+  * http://localhost:3000/index.html
+* We don't need to define our own routes for static assets (get, post, etc)
+* If we take a deep look to this urls we can see that the public folder will be our site root for static assets
+
+  ```bash
+  /
+  |-public
+  | |- img
+  | |  |- logo.png
+  | |
+  | |- js
+  | |  |- script.js
+  | |
+  | |- css
+  | |  |- styles.css
+  |
+  |- index.html
+  ```
+
+* We can also create a static assets alias using
+* To create an alias we use the alias name as `app.use` first parameter
+* Then we pass the middleware as second parameter
+
+  **Example:**
+  ```js
+  const express = require('express')
+  const app = express()
+
+  app.use('/assets', express.static('public'));
+  ```
+* In this example we create `/assets` as our public static assets
+* This means that using `/assets` as url we'll have access to the `public` folder content
+* Due to this change we need to update the way that we call our assets:
+  * http://localhost:3000/assets/img/logo.png
+  * http://localhost:3000/assets/js/script.js
+  * http://localhost:3000/assets/css/styles.css
+  * http://localhost:3000/assets/index.html
+* Using an alias we don't let the user know about our folder architecture
+* Also, we can use any folder for our static assets
+* We can change the folder name without having to update the alias
+* Also we can configure more than one folder in case we need to
+* Express will keep on looking for assets in all configured folders in case that it doesn't find it
+
+  **Example:**
+  ```js
+  app.use(express.static('public'));
+  app.use(express.static('imgs'));
+  ```
+
+* In this case express will try to find first our assets on the `public` folder
+* If it doesn't find it, then it will look for them on the `imgs` folder
+
+#### Practice
+[Exercise 16](./exercises/node/ex_16.md)
+
+### Templates
+* Using express we can configure a template engine
+* Express can use many [different templates engines](http://expressjs.com/en/guide/using-template-engines.html)
+* We'll use Pug as it's express default template engine
+* Pug it’s a high performance and feature-rich templating engine
+* Pug helps us write shorter HTML content
+* This template used to be called `Jade` and it was renamed to `Pug`
+* Pug works with indentation or white spaces (like Python)
+* To see Pug in action we'll have to configure express to use Pug as template engine and also create our first template
+* Install pug and set it as template engine
+
+  ```
+  npm install pug --save
+  ```
+
+  **Example:**
+  ```js
+  app.set('view engine', 'pug');
+  ```
+
+* Use `app.set` method to set our `view engine` and use `pug`
+* And now we create our first pug template
+* As it's a pug template we'll use the `.pug` extension
+
+**Example:**
+* index.pug
+  ```
+  doctype html
+  html(lang='en')
+    head
+      title= title
+    body
+      h1= message
+      div.container
+      p Starting using Pug!
+  ```
+
+* In some way this looks like HTML but it's much shorter as we're using Pug to write the template
+* To use this template from express we need to save it on the views folder
+* If you don't have a views folder you can create one
+
+  **Project structure:**
+  ```
+  /
+  |- index.js
+  |- views
+      |- index.pug
+  ```
+
+* The html, head, title, body & h1 template values will render the corresponding HTML tags
+* Pug compiles this templates into HTML and it will throw a compilation error if identation it's not right
+* Using pug we can assign values to the elements in the following way: `title= title` or `h1= message`
+* In boths cases we're assigning a value to the title element and the h1 too
+* Now we need to pass those values to the template so it can render it
+* `title & message` are JavaScript variables
+* Using the `=` operator in pug will assign the variables value as HTML element content
+* Use `.classname` to define a class name like div.container
+* And we can just write text if it's static content like `p Starting using Pug!` where the element p will have Starting using Pug! as content
+
+  **index.js**
+  ```js
+  const express = require('express');
+  const app = express();
+
+  app.set('view engine', 'pug');
+
+  app.get('/', (req, res) => {
+    res.render('index', { title: 'Hey', message: 'Hello there!' });
+  });
+
+  app.listen(3000);
+  ```
+
+* In this example we configured a root route
+* Using the response `render` method we can send a response to the user
+* The render method accepts two parameters
+  * The first parameter is the template name
+  * The second parameter is a JavaScript object where each property will become a template variable
+* So, calling http://localhost:3000 will render the index.pug template passing Hey text as title value and Hello there! as message
+* Express will render the template and create the content to send to the user
+* The final template result will be:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>Hey</title>
+    </head>
+    <body>
+      <h1>Hello there!</h1>
+      <div class="container">
+        <p>Starting using Pug!</p>
+      </div>
+    </body>
+  </html>
+  ```
+
+* You can read more about the render method on [Express render doc](http://expressjs.com/api.html#app.render)
+* Using Pug we have different ways to set HTML content
+* We already saw that we can change the content using variables
+* Also, we can use three different ways to set static content:
+  * Leaving one space between the element and the content
+    ```
+    p text as content
+    ```
+  * Adding pipe and indentation 
+    ```
+    p
+      | text as content
+    ```
+  * Finally using a dot and indentation
+    ```
+    p.
+      text as content
+    ```
+
+* Use parenthesis to write HTML element attributes
+
+  ```
+  a(href='contat.html', target='_blank') Contact
+  ```
+
+* Once this renders it will became a link tag with href and target attributes
+
+  ```html
+  <a href="contact.html" target="_blank">Contact</a>
+  ```
+
+* Use ids and classes using the CSS notation, `#` for ids and `.` for classes
+
+  ```
+  div#main main content
+  div.red text in red
+  ```
+
+  ```html
+  <div id="main">main content</div>
+  <div class="red">text in red</div>
+  ```
+
+* Also, we can combine ids and classes
+
+  ```
+  div#container.left
+  ```
+
+* Pug has link and script tags support
+* We use the tag name and parenthesis for the attributes like the rest of the elements
+
+  ```
+  link(href='/css/styles.css', rel='stylesheet')
+
+  script(src='/js/scripts.js')
+  ```
+
+* We can also add css and js code as content in case we need to add styles or JavaScript to the document
+* For CSS we need to replace link for style but for JavaScript it will still be script (like in the HTML that we already know)
+
+  ```
+  style.
+    body { 
+      color: red;
+    }
+
+  script(type='text/javascript').  
+    const message = 'Using JS from PUG';
+    alert(message);
+  ```
+
+  ```html
+  <style>
+    body {
+      color: red;
+    }
+  </style>
+
+  <script type="text/javascript">
+    const message = 'Using JS from PUG';
+    alert(message);
+  </script>
+  ```
 
