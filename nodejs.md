@@ -1499,4 +1499,578 @@
     alert(message);
   </script>
   ```
+* So far Pug it's great but we're still building a complete HTML document
+* It would be nice to have a more modular way of building our UI so we can reuse sections
+* Pug has mixin support that allow us to use code blocks
+
+* product-mixin.pug
+  ```
+  mixin product
+    .product-wrapper
+      h2 Product
+      p Product description
+  ```
+
+* Now that we created the product mixin we can include it on our index.pug file and use it
+
+* index.pug
+  ```
+  include product-mixin
+
+  body
+    +product
+  ```
+
+* In this example we use pug include to get the mixin content and call it from the index template
+* Using `+` we let Pug know that this is a mixin that we want to use
+* We can think about mixin like functions that we call
+* At this moment we're using the product code but it's just static so it's not that helpful
+* Adding variables we can make this mixin more useful
+
+* product-mixin.pug
+  ```
+  mixin product(product)
+    .product-wrapper
+      h2= product.title
+      p= product.description
+  ```
+
+* index.pug
+  ```
+  include product-mixin
+
+  body
+    +product({title: 'PS4 Pro', description: 'Best console ever, so far..' })
+  ```
+
+* In this example we added a product parameter to the mixin so we can pass data to it
+* When we call the mixin now we need to pass the product object as it's what the mixin is using
+* Once Pug renders this template we get the expected output
+  ```html
+  <section>
+    <div class="product-wrapper">
+      <h2>PS4 Pro</h2>
+      <p>Best console ever, so far..</p>
+    </div>
+  </section>
+  ```
+
+* We can re-use this mixin for other products
+* index.pug
+  ```
+  include product-mixin
+
+  body
+    section  
+      +product({title: 'PS4 Pro', description: 'Best console ever, so far..' })
+    section
+      +product({title: 'XBOX', description: 'Other great console' })
+  ```
+
+  ```html
+  <section>
+    <div class="product-wrapper">
+      <h2>PS4 Pro</h2>
+      <p>Best console ever, so far..</p>
+    </div>
+  </section>
+  <section>
+    <div class="product-wrapper">
+      <h2>XBOX</h2>
+      <p>Other great console</p>
+    </div>
+  </section>
+  ```
+
+* Learn more about mixins on [Pug mixin docs](https://pugjs.org/language/mixins.html)
+* Pug supports template inheritance
+* To use this useful feature we need to use `block and extends keywords`
+* A `block` is simply a “block” of Pug that a child template may replace over the template
+* This process is recursive
+* Pug blocks can provide default content in case we need it
+* This provides a default content and is purely optional
+* The following example defines a scripts, content & foot block
+
+* layout.pug
+  ```
+  doctype html
+  html(lang='en')
+    head
+      title= title
+      style(type="text/css").
+        body { 
+          color: red;
+        }
+      block scripts
+    body
+      block content
+      block foot
+  ```
+
+* With this layout we can call the scripts, content and foot blocks
+* Now we can extend this layout for other templates
+
+* index.pug
+  ```
+  extends ./layout.pug
+  include product-mixin
+
+  block scripts
+    script.
+      alert('alert from a block');
+
+  block content
+    h1= message
+    div.container
+      p Starting using Pug!
+    p
+      | text as content
+    p.
+      text as content
+    p text as content
+    a.foo_link(href='about.html', target='_blank') About Us
+    div#main main content
+    div.red text in red
+    section  
+      +product({title: 'PS4 Pro', description: 'Best console ever, so far..' })
+    section
+      +product({title: 'XBOX', description: 'Other great console' })
+
+  block foot
+    div This footer content comes from a block
+  ```
+
+* Using block scripts we're able to add code to the scripts layout section
+* The same happens with content and foot
+* Once Pug renders everything together we get the final HTML result
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>Hey</title>
+        <style type="text/css">body { 
+          color: red;
+        }
+        </style>
+        <script>
+          alert('alert from a block');
+        </script>
+    </head>
+    <body>
+      <h1>Hello there!</h1>
+      <div class="container">
+        <p>Starting using Pug!</p>
+      </div>
+      <p>text as content</p>
+      <p>text as content</p>
+      <p>text as content</p>
+      <a class="foo_link" href="about.html" target="_blank">About Us</a>
+      <div id="main">main content</div>
+      <div class="red">text in red</div>
+      <section>
+        <div class="product-wrapper">
+          <h2>PS4 Pro</h2>
+          <p>Best console ever, so far..</p>
+        </div>
+      </section>
+      <section>
+        <div class="product-wrapper">
+          <h2>XBOX</h2>
+          <p>Other great console</p>
+        </div>
+      </section>
+      <div>This footer content comes from a block</div>
+    </body>
+  </html>
+  ```
+
+* You can learn more about layouts and blocks on the [Pug inheritance docs](https://pugjs.org/language/inheritance.html)
+* So far we learned a lot about Pug and how it works and it looks like it's a really helpful tool to build our ui
+* But we're still missing some main features like using js code, iterating elements or using conditionals inside our templates
+* Use `-` to define JavaScript variables inside the templates
+
+  ```
+  - const niceTitle = 'This is a nice title';
+  ```
+
+* Then we can use this title variable on our templates
+
+  ```
+  h1= niceTitle
+  p This template has a nice #{niceTitle}
+  ```
+
+* In this example we defined a niceTitle string variable with the text: This is a nice title
+* The we used this variable on our template in two different ways
+  * First we assign `niceTitle` value as `h1 element content` using `=` operator
+  * The we used the same `niceTitle` value as string Interpolation using `#{niceTitle}`
+* We could even use HTML encoded content and Pug will escape that content for us
+
+  ```
+  - myDivContent = '<span>This content is from a template variable</span>';
+
+  div This div has a span #{myDivContent}
+  ```
+
+  ```html
+  <div>
+    This div has a span &lt;span&gt;This content is from a template variable&lt;/span&gt;
+  </div>
+  ```
+
+* We can see that Pug will replace the `< >` simbols for the HTML entities so we can show the HTML tags as content instead of real html content
+* You can learn more about string interpolation, escape sequence, whitespace and more on [Pug interpolation docs](https://pugjs.org/language/interpolation.html)
+
+* We can use conditional inside our templates
+
+  ```
+  - var language = "spanish"
+
+  if language == "spanish"
+      p Estas programando muy bien, felicitaciones!!
+  else  
+      p Your code rocks, Congrats!!
+  ```
+
+* In this case we'll get the following HTML as we defined language as spanish
+* Also, we could change the language value to other language and we'll see the message in english
+
+  ```html
+  <p>Estas programando muy bien, felicitaciones!!</p>
+  ```
+
+* Pug gives us a `unless` that works like a negated if (!)
+
+  ```
+  unless language != "spanish"
+    p Your code rocks, Congrats!!
+  ```
+
+* Learn more about conditionals on [Pug conditionals doc](https://pugjs.org/language/conditionals.html)
+* We have different options to iterate over our values using Pug
+* Use each to iterate over an array
+  ```
+  - hookCharacters = ['Peter', 'Nana', 'Captain Hook']
+
+  ul
+    each character in hookCharacters
+      li= character
+  ```
+
+  ```html
+  <ul>
+    <li>Peter</li>
+    <li>Nana</li>
+    <li>Captain Hook</li>
+  </ul>
+  ```
+
+* In this example we use a local array but we could get this value from express and the render method
+* Using `each` we get each value of the array
+* In this case we iterate the `hookCharacters` array
+* So on each iteration we get a `character` value
+* Then we tell Pug to use the character name as li element content `li= character`
+* We can also get the iteration index
+
+  ```
+  - hookCharacters = ['Peter', 'Nana', 'Captain Hook']
+
+  ul
+    each character, index in hookCharacters
+      li= index + ': ' + character
+  ```
+
+  ```html
+  <ul>
+    <li>0: Peter</li>
+    <li>1: Nana</li>
+    <li>2: Captain Hook</li>
+  </ul>
+  ```
+* We can also use `while` as PUG iterator
+
+  ```
+  - var n = 0;
+  ul
+    while n < 4
+      li= n++
+  ```
+
+  ```html
+  <ul>
+    <li>0</li>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+  </ul>
+  ```
+
+* Learn more about iteration on [Pug iteration doc](https://pugjs.org/language/iteration.html)
+* Check out Pug assets and sources to learm much more about this powerful template engine
+
+  ![Pug](./resources/images/node/pug.jpg)
+
+
+## Sending/getting data from the client to the server
+* To send data from the client to the server we can use forms or ajax calls
+* Using forms we'll be able to send values using GET and POST
+* By doing AJAX calls we can use HTTP GET, POST, UPDATE and DELETE
+* We need to configure Express routes to get the request values using one of this methods
+* If the server expects the values from GET, the client will send them using GET method
+* In case the server expects the value from POST, the client will send them using POST method
+* So we need to send values to the server the way it expected them
+* One of the most simple way to pass a value to the route handler is using the express params
+* For example we can create a route handler for `/products/` and add a product id
+* In this case the URL it's going to look like: `http://localhost:3000/products/1`
+* In this case we're calling the products handler and passing an id to it
+* Express has a special way to configure URL parameters and it's using `:` on the route handler
+* For example we can create a route like `/products/:id`
+* In this URL `:id` it's the parameter that we're going to pass
+* Lets define the route this way
+
+  ```js
+  app.get('/products/:id', (req, res) => {
+    res.send('Product with the id: ');
+  })
+  ```
+
+* In this example we see that we can create a route handler that it's expecting a URL parameter
+* In this case the url it's going to be `http://localhost:3000/products/10`
+* Now we need to know how to retrieve this id parameter using Express
+* The request object has a params property that it's an object with all the parameters that this request has
+* As we configured `:id` and we called using `/products/10` there's going to be an `id` property on the request.params object
+* To get the id from the url we use `req.params.id`
+
+  ```js
+  app.get('/products/:id', (req, res) => {
+    const id = req.params.id;
+
+    res.send(`Product with the id: ${id}`);
+  });
+  ```
+
+* In this example we see how using req.params.id we can get the id from the URL
+* Other way to send values to the server it's using query string
+* We know that using an url like `http://localhost:3000/products/?id=1` we are passing `id=1` as query string
+* The request object has a query property that allows us to get the URL query string params
+* Using `req.query` we get an object back that represents the URL query string
+* In this case we want to get the id value so we can do `req.query.id` to get `1` as value back
+  ```js
+  app.get('/products', (req, res) => {
+    const id = req.query.id;
+    
+    res.send(`Product with the id: ${id}`);
+  });
+  ```
+
+* In this example we see that the route it's waiting for a query parameter with the id name
+* If we call `http://localhost:3000/products?id=1` we pass id as query parameter with value 1
+* In this case this req.query.id will become 1 and we assign it to the id variable
+* So we can say that this are two different ways to pass values using GET and express routes
+* Notice the different between using `/products/:id` and `req.params.id`
+* The other option is to use  `/products` and query string like `req.query.id`
+* Now that we know this we can create a form and send values to the server
+
+  ```html
+  <form action="/products" method="get">
+    <input type="text" name="username" placeholder="username">
+    <input type="text" name="firstname" placeholder="firstname">
+    <input type="text" name="lastname" placeholder="lastname">
+    <input type="submit" value="Submit">
+  </form>
+  ```
+
+* This form has three inputs username, firstname & lastname
+* When we submit this form all this values will be submitted to `/products`
+* As the form is configured to use GET it will send all this values using query string
+* The URL it's going to look like: `http://localhost:3000/products?username=nisnardi&firstname=nicolas&lastname=isnardi`
+* We can see that we'll have a `username, firstname & lastname` values
+* On the Express route handler this will become: 
+  ```js
+  req.query.username;
+  req.query.firstname;
+  req.query.lastname;
+  ```
+* Now we can configure our route to handle this values
+  ```js
+  app.get('/products', (req, res) => {
+    const username = req.query.username;
+    const firstname = req.query.firstname;
+    const lastname = req.query.lastname;
+    
+    res.send(`We got the following values from the query string: ${username}, ${firstname} & ${lastname}`);
+  });
+  ```
+
+* We can see that we can use query string to retrieve values from the form
+* As we sent them using GET from the form we need to use req.query to retrieve the values
+* Once the route handler gets executed it will get the query values and we define three variables to store each query string value
+* Then we just send the response using this query string values
+  ```
+  We got the following values from the query string: nisnardi, nicolas & isnardi
+  ```
+
+* To send data to the server using POST we can change the form action
+
+  ```html
+  <form action="/products" method="post">
+    <input type="text" name="username" placeholder="username">
+    <input type="text" name="firstname" placeholder="firstname">
+    <input type="text" name="lastname" placeholder="lastname">
+    <input type="submit" value="Submit">
+  </form>
+  ```
+
+* As you can see the only value that changed is `method="post"` (it used to be get)
+* Now the values won't be submitted as query string and instead we'll send them on the request body
+* To use Express to get POST values we need to add [body-parser](https://github.com/expressjs/body-parser) that's a Express middleware
+* Body parser can get all the POST requests or we can configure it just fo the routes that we want
+* Then it will get the POST values and append then as request body property
+* So in this case we're sending `username, firstname & lastname`
+* And they will become `req.body.username, req.body.firstname & req.body.lastname` after executing body-parser as middleware
+* To use this module we need to install it
+  ```
+  npm install body-parser
+  ```
+* Once we installed the module we need to configure it
+  ```js
+  const bodyParser = require('body-parser');
+  const urlencodedParser = bodyParser.urlencoded({ extended: false });
+  ```
+
+* First we required body-parser module
+* Then we configure body-parser for urlencoded (the form enctype that we use by default)
+* We assign the body-parser return value to the `urlencodedParser`
+* Now we can use this middleware in our routes
+* We'll add `urlencodedParser` to any route that we want body-parser to append the POST values into the request body
+
+  ```js
+  app.post('/products', urlencodedParser, (req, res) => {
+    const username = req.body.username;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    
+    console.log(req.body);
+
+    res.send(`We got the following values from the query string: ${username}, ${firstname} & ${lastname}`);
+  });
+  ```
+
+* In this example we configured a post route handler for `/products/`
+* When we submit the form it will send the request to this route handler
+* The request will send all the form values
+* Using `urlencodedParser` we configure this route to use body-parser
+* This means that when this route gets called we'll have all the form values in the `req.body` object
+* To get the values sent from the form we use: `req.body.username, req.body.firstname & req.body.lastname`
+* This names comes from the form inputs name
+* When we show the `req.body` value on the console we get:
+  ```js
+  { 
+    username: 'nisnardi',
+    firstname: 'nicolas',
+    lastname: 'isnardi' 
+  }
+  ```
+
+* The req.body it's a JavaScript object and body-parsed added username, firstname & lastname as properties
+* Then using this properties we can get the values
+* The last thing that we need to know is how to send files
+* Express won't handle our files upload so we need to use a module called [Multer](https://github.com/expressjs/multer)
+* Multer works in a similar way that body-parser
+* We can only use multer if we're uploading images
+* Something really important is that as we're going to be uploading a file we need to set the form enctype in a different way
+* When using multer set the `form enctype` to `multipart/form-data`
+* Multer will append the values to the request body
+* We can configure multer to use one or many files
+* For now we can configure to use it with one file to make it easier
+* First we need to install multer to our project
+  ```
+  npm i multer
+  ```
+* Now that we have multer installed we need to require ir and configure it
+  ```js
+  const multer  = require('multer');
+  const upload = multer({ dest: 'upload' });
+  ```
+
+* After requiring multer as module we need to configure the folder that we're going to store the uploaded images
+* In this case we configured `upload` as the destination folder
+* As we're going to send a file we need to update our form
+
+  ```html
+  <form action="/products" method="post" enctype="multipart/form-data">
+    <input type="text" name="username" placeholder="username">
+    <input type="text" name="firstname" placeholder="firstname">
+    <input type="text" name="lastname" placeholder="lastname">
+    <input type="file" name="file">
+    <input type="submit" value="Submit">
+  </form>
+  ```
+* To upload the file we need to change the `enctype="multipart/form-data"` so multer can take care of it
+* Also we need to add a `<input type="file" name="file">`
+* Note that the name of the input is `file` as this is the value that we need to set up in multer too
+  ```js
+  app.post('/products', upload.single('file'), (req, res) => {
+    const filename = req.file.originalname;
+    
+    console.log(req.body);
+    console.log(req.file);
+    
+    res.send(`Congrats we uploaded the following file ${filename}`);
+  });
+  ```
+* in this example we can see that multer will store the inputs values into the request body (the same as body-parser)
+* The body object will look something like:
+  ```js
+  { 
+    username: 'nisnardi',
+    firstname: 'nicolas',
+    lastname: 'isnardi' 
+  }
+  ```
+* In this example we see that it looks the same way that using body-parser
+* As we configure `upload.single('file')` we told multer to get the `file` value and upload it to the `upload` folder
+* Using `req.file` we can access the uploaded file values
+* When we configure multer with `upload.single` it will use `req.file` to append all the file values
+* Remember that we used `file` as input name
+* If we use other input name like `avatar` we still use req.file to get the values but `upload.single('avatar')` to configure the rout handler
+* Our `req.file` object will look like this:
+  ```js
+  { 
+    fieldname: 'file',
+    originalname: 'lukecage.jpg',
+    encoding: '7bit',
+    mimetype: 'image/jpeg',
+    destination: 'upload',
+    filename: '7b4f43860a856577f5c47aba1ae592c5',
+    path: 'upload/7b4f43860a856577f5c47aba1ae592c5',
+    size: 13078 
+  }
+  ```
+* In this example we can see that using `originalname` property we get the uploaded file real name
+* Multer will add a random name to the uploaded file by default `filename: '7b4f43860a856577f5c47aba1ae592c5'`
+* This means that the file on the server won't be `lukecage.jpg` but `7b4f43860a856577f5c47aba1ae592c5`
+* We can configure multer to use a different file name in case we want to
+* You can read about it on the [multer doc](https://github.com/expressjs/multer)
+* Express has many cool forms to handle sessions, form validations, security and much more!
+* Go for it and look for more Express modules and learn how to use it by reading the modules doc
+* [Node.js file upload using Multer](https://medium.com/@bmshamsnahid/nodejs-file-upload-using-multer-3a904516f6d2)
+
+
+## Assets / Sources
+* [NodeSchool - Free Node.js, JavaScript and more courses](https://nodeschool.io/)
+* [pugjs.org](https://pugjs.org)
+* [Codeburst - getting-started-with-pug-template-engine - Medium ()](https://codeburst.io/getting-started-with-pug-template-engine-e49cfa291e33)
+* [dcode - Pug (Jade) Tutorial #1 - Getting Started | HTML + NodeJS - Youtube](https://www.youtube.com/watch?v=AY99ODBchIA&list=PLVvjrrRCBy2JbOPP2JXfCtADABI1QHzWg)
+* [jade](https://webapplog.com/jade)
+* [Learn pug.js with pugs](https://codepen.io/mimoduo/post/learn-pug-js-with-pugs)
+* [Pug.js - Cheat sheet](https://codepen.io/mimoduo/post/pug-js-cheat-sheet)
+* [Express server side rendering](https://gist.github.com/joepie91/c0069ab0e0da40cc7b54b8c2203befe1)
+* [Practical Node - online book](https://gittobook.org/books/185/practicalnode) (look at the PUG sections over the index)
+* [Youtube - Node.js / Express / MongoDB - Build a Shopping Cart](https://www.youtube.com/watch?v=-3vvxn78MH4&t=1s)
+* [Youtube - Node Authentication Tutorial | Creating a User Based App from Scratch](https://www.youtube.com/watch?v=gYjHDMPrkWU&list=PLpPnRKq7eNW3Qm2OfoJ3Hyvf-36TulLDp)
+
+## Let's Checkout Building a Site with Express.js
+* [<- Browser API](browser.md) - [Building a site using Node.js and Express ->](buildingsite.md)
 
