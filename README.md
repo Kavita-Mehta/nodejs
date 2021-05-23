@@ -22,4 +22,6 @@
   * `Protect and serve`
 * [Node.js](nodejs.md)
   * `Oh Node You Didn't`
+* * [Building a Node.js site with Express](buildingsite.md)
+  * `Express yourself`
 
