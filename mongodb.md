@@ -706,4 +706,111 @@
       console.log("Connected successfully to server");
     });
     ```
+* We're going to use the client object to get the database
+* The client object has a `db` method that accepts a string with the database name
+* It returns a database object
+
+  ```js
+  const db = client.db('comics');
+  ```
+  
+* The same as using MongoDB shell we need to use a collection
+* The `db` object that we got from the `client` one has a `collection` method that allow us to select the collection
+* This method accepts a string with the collection name
+* This method returns a collection object
+
+  ```js
+  const collection = db.collection('superheroes');
+  ```
+
+* Now that we have the collection we can use the `find` method to query
+* The `find` method accepts an object with the criteria to search by
+
+  ```js
+  collection.find({})
+  ```
+
+* The `find` method returns a `cursor` object
+* We need to find a way to transform our cursor into objects to use the documents we get back
+* That's why the cursor object has a `toArray` method that will transform the result into an array of objects (documents)
+* The toArray object accepts a callback
+* This callback gets two parameters, first an error and second the documents that it get back
+
+  ```js
+  collection.find({}).toArray((error, documents) => {
+    console.log(documents);
+  })
+  ```
+
+* As we opened a connection to the MongoDB we need to close it if we're not using it
+* The `client` object has a `close` method that will close the database connection
+
+  ```js
+  client.close();
+  ```
+
+* Great now we know how the mongodb driver works
+* Lets put everything together
+
+  ```js
+  const MongoClient = require('mongodb').MongoClient;
+  const url = 'mongodb://localhost:27017';
+
+  MongoClient.connect(url, function(err, client) {
+    const db = client.db('comics');
+    const collection = db.collection('superheroes');
+
+    collection.find({}).toArray((error, documents) => {
+      console.log(documents);
+      client.close();
+    });
+  });
+  ```
+
+* Using express we'll need to add this code to our route handler
+
+  ```js
+  app.get('/', (req, res) => {
+    MongoClient.connect(url, function(err, client) {
+      const db = client.db('comics');
+      const collection = db.collection('superheroes');
+
+      collection.find({}).toArray((error, documents) => {
+        client.close();
+        res.render('index', { documents: documents });
+      });
+    });
+  });
+  ```
+
+* Close the connection before sending the response to the client
+* Now we know how to query MongoDB from Node.js and also using Express route
+* But what about inserting, updating or deleting documents?
+* The MongoDB driver has methods for each case
+* Check the [MongoDB driver collection methods doc](http://mongodb.github.io/node-mongodb-native/3.0/api/Collection.html)
+* As you can see there're a lot of things that we can do once we have a collection
+* To insert documents we have two methods: `insertOne & insertMany`
+
+  ```js
+  const doc = { "name": "CAPTAIN MARVEL", "image": "captainmarvel.jpg" };
+
+  collection.insertOne(doc, (err, result) => {
+    callback(result);
+  });
+  ```
+
+* Now insert many documents using an array
+
+  ```js
+  const documents = [
+    { "name": "CAPTAIN MARVEL", "image": "captainmarvel.jpg" },
+    { "name": "HULK", "image": "hulk.jpg" },
+    { "name": "THOR", "image": "thor.jpg" }
+  ];
+
+  collection.insertMany(documents, (err, result) => {
+    callback(result);
+  });
+  ```
+
 
