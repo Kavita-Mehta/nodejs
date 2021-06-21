@@ -26,3 +26,6 @@
   * `Express yourself`
 * [MongoDB & Mongoose](mongodb.md)
   * `MongoDB`
+* [Deploy](deploy.md)
+  * `Sharing to world wide web`
+
