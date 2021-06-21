@@ -812,5 +812,222 @@
     callback(result);
   });
   ```
+  
+  
+* Update also has two methods: `updateOne & updateMany`
+* This updates methods accepts a filter object as first parameter
+* Also accepts a second parameter that's a callback
+
+  ```js
+  const filter = { name: 'HULK' };
+  const update = { $set: { power: 100 } };
+
+  collection.updateOne(filter, update, (err, result) => {
+      callback(result);
+  });
+  ```
+
+* We can do the same with updateMany
+
+  ```js
+  const filter = { name: 'HULK' };
+  const update = { $set: { power: 100 } };
+
+  collection.updateMany(doc, update, (err, result) => {
+      callback(result);
+  });
+  ```
+
+* If we have more than one document with the name HULK it will update the power to 100
+* Finally we can delete documents using MongoDB driver two methods: `deleteOne & deleteMany`
+* As we're going to delete documents now it's a good time about MongoDB ObjectID
+* MongoDB driver has a 
+
+  ```js
+  const ObjectID = require('mongodb').ObjectID;
+  const filter = { _id:  ObjectID('5b07560bda15952ac0b33e6c')};
+
+  collection.deleteOne(query, function(err, result) {
+      callback(result);
+    });    
+  ```
+
+#### Practice
+[Exercise 10](./exercises/mongo/ex_10.md)
+
+[Exercise 11](./exercises/mongo/ex_11.md)
+
+## Other Databases
+
+* Express apps can use any database supported by Node (Express itself doesn't define any specific additional behavior/requirements for database management). There are [many popular options](https://expressjs.com/en/guide/database-integration.html), including PostgreSQL, MySQL, Redis, SQLite, and MongoDB.
+
+## Using an ODM/ORM
+
+* Rather than using the databases' native query language (e.g. SQL), you can use an Object Data Model ("ODM") / Object Relational Model ("ORM"). An ODM/ORM represents the website's data as JavaScript objects, which are then mapped to the underlying database. Some ORMs are tied to a specific database, while others provide a database-agnostic backend.
+  * Pros
+    * Easier for programmers can continue to think in terms of JavaScript objects rather than database semantics
+    * Provide an obvious place to perform validation and checking of data
+  * Cons
+    * Less performant than native query languages
+
+## Mongoose
+
+* Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment. Mongoose supports both promises and callbacks.
+* Installing Mongoose and MongoDB
+    ```bash
+    npm install mongoose
+    ```
+### Connecting to MongoDB
+
+* Mongoose requires a connection to a MongoDB database. You can require() and connect to a locally hosted database with mongoose.connect(), as shown below.
+  ```js
+  //Import the mongoose module
+  var mongoose = require('mongoose');
+
+  //Set up default mongoose connection
+  var mongoDB = 'mongodb://127.0.0.1/my_database';
+  mongoose.connect(mongoDB, { useNewUrlParser: true });
+
+  //Get the default connection
+  var db = mongoose.connection;
+
+  //Bind connection to error event (to get notification of connection errors)
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  ```
+
+### Defining and creating models
+
+* Models are defined using the Schema interface.
+* The Schema allows you to define the fields stored in each document along with their validation requirements and default values. 
+
+  ```js
+  const mongoose = require('mongoose');
+
+  const superHeroSchema = new mongoose.Schema({
+    name: String
+  });
+  ```
+* A SchemaType is then a configuration object for an individual property.
+* Schemas are then "compiled" into models using the `mongoose.model()` method.
+
+  ```js
+  const SuperHeroModel = mongoose.model('SuperHeroModel', superHeroSchema);
+  ```
+* The following are all the valid SchemaTypes in Mongoose. [Mongoose plugins](http://plugins.mongoosejs.io/) can also add custom SchemaTypes:
+  * [String](https://mongoosejs.com/docs/schematypes.html#strings)
+  * [Number](https://mongoosejs.com/docs/schematypes.html#numbers)
+  * [Date](https://mongoosejs.com/docs/schematypes.html#dates)
+  * [Buffer](https://mongoosejs.com/docs/schematypes.html#buffers)
+  * [Boolean](https://mongoosejs.com/docs/schematypes.html#booleans)
+  * [Mixed](https://mongoosejs.com/docs/schematypes.html#mixed)
+  * [ObjectId](https://mongoosejs.com/docs/schematypes.html#objectids)
+  * [Array](https://mongoosejs.com/docs/schematypes.html#arrays)
+  * [Decimal128](https://mongoosejs.com/docs/api.html#mongoose_Mongoose-Decimal128)
+  * [Map](https://mongoosejs.com/docs/schematypes.html#maps)
+* Mongoose provides built-in and custom validators, and synchronous and asynchronous validators.
+* The built-in validators include:
+
+  * All [SchemaTypes](http://mongoosejs.com/docs/schematypes.html) have the built-in [required](http://mongoosejs.com/docs/api.html#schematype_SchemaType-required) validator. This is used to specify whether the field must be supplied in order to save a document.
+  * [Numbers](http://mongoosejs.com/docs/api.html#schema-number-js) have [min](http://mongoosejs.com/docs/api.html#schema_number_SchemaNumber-min) and [max](http://mongoosejs.com/docs/api.html#schema_number_SchemaNumber-max) validators.
+  * [Strings](http://mongoosejs.com/docs/api.html#schema-string-js) have:
+    * [enum](http://mongoosejs.com/docs/api.html#schema_string_SchemaString-enum): specifies the set of allowed values for the field.
+    * [match](http://mongoosejs.com/docs/api.html#schema_string_SchemaString-match): specifies a regular expression that the string must match.
+    * [maxlength](http://mongoosejs.com/docs/api.html#schema_string_SchemaString-maxlength) and [minlength](http://mongoosejs.com/docs/api.html#schema_string_SchemaString-minlength) for the string.
+  ```js
+  var superHeroSchema = new Schema({
+    movieCount: {
+      type: Number,
+      min: [0, 'Too few movies'],
+      max: 12,
+      required: [true, 'Why no movies?']
+    },
+    brand: {
+      type: String,
+      enum: ['Marvel', 'DC']
+    }
+  });
+  ```
+* While you can create schemas and models using any file structure you like, we highly recommend defining each model schema in its own module (file), exporting the method to create the model.
+
+  **./models/superhero.model.js**
+  ```js
+  const mongoose = require('mongoose');
+
+  const superHeroSchema = new mongoose.Schema({
+    name: String
+  });
+  module.exports = mongoose.model('SuperHeroModel', superHeroSchema);
+  ```
+
+### Using models
+
+#### Creating Documents
+
+* An instance of a model is called a document. Creating them and saving to the database is easy.
+  ```js
+  var SuperHeroModel = require('../models/superhero.model')
+
+  var hero = new SuperHeroModel({ name: 'WOLVERINE' });
+  hero.save(function (err) {
+    if (err) return handleError(err);
+    // saved!
+  });
+
+  // or
+
+  SuperHeroModel.create({ name: 'WOLVERINE' }, function (err, small) {
+    if (err) return handleError(err);
+    // saved!
+  });
+
+  // or, for inserting large batches of documents
+  SuperHeroModel.insertMany([{ name: 'WOLVERINE' }], function(err) {
+
+  });
+  ```
+
+#### Querying Documents
+
+* Finding documents is easy with Mongoose, which supports the rich query syntax of MongoDB. Documents can be retreived using each models find, findById, findOne, or where static methods.
+  ```js
+  SuperHeroModel.find({ name: 'WOLVERINE' }).where('createdDate').gt(oneYearAgo).exec(callback);
+  ```
+
+#### Updating Documents
+* Each model has its own update method for modifying documents in the database without returning them to your application. See the API docs for more detail.
+  ```js
+  SuperHeroModel.deleteOne({ brand: 'DC' }, function (err) {
+    if (err) return handleError(err);
+    // deleted at most one tank document
+  });
+  SuperHeroModel.updateOne({ name: 'WOLVERINE' }, { name: 'LOGAN' }, function(err, res) {
+    // Updated at most one doc, `res.modifiedCount` contains the number
+    // of docs that MongoDB updated
+  });
+  ```
+
+#### Deleting Documents
+* Models have static deleteOne() and deleteMany() functions for removing all documents matching the given filter.
+  ```js
+  SuperHeroModel.deleteOne({ brand: 'DC' }, function (err) {
+    if (err) return handleError(err);
+    // deleted at most one tank document
+  });
+  ```
+
+#### Practice
+[Exercise 12](./exercises/mongo/ex_12.md)
+
+[Exercise 13](./exercises/mongo/ex_13.md)
+
+## Assets
+* [Node.js MongoDB API (to use node and mongod)](http://mongodb.github.io/node-mongodb-native/3.0/api/)
+* [Add schema support with Mongoose](http://mongoosejs.com/)
+* [Creating a REST API with Node.js, MongoDB & Mongoose](https://www.youtube.com/watch?v=0oXYLzuucwE&index=1&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q)
+
+
+## Let's Checkout Deploying
+* [<- Building a site using Node.js and Express](buildingsite.md) - [Deploying a Node.js Application ->](deploy.md)
+  
 
 
